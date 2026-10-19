@@ -1,11 +1,54 @@
 # Tooling configuration for the FRITZ!Box Monitor custom integration.
 #
 # The integration is not a Python package; Home Assistant loads it
-# directly from custom_components/fritz_box_monitor. This file only
-# configures linters and the type checker for development.
+# directly from custom_components/fritz_box_monitor. The [project] table
+# only anchors the uv development environment, and the dev dependency
+# group carries the test harness.
+
+[project]
+name = "hass-fritz-box-monitor"
+version = "0.1.0"
+description = "Home Assistant integration that monitors a FRITZ!Box cable modem."
+# Home Assistant 2026.10 requires Python 3.14 (>= 3.14.2).
+requires-python = ">=3.14.2"
+dependencies = []
+
+[tool.uv]
+# See the vendored wheels and tool.uv.sources below: mock-open and pyric
+# (transitive test dependencies) publish no wheels, and building their
+# sdists fails in some sandboxed environments.
+find-links = ["wheels"]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+    # Tracks home-assistant/core releases; pinned to HA 2026.10.2.
+    "pytest-homeassistant-custom-component==0.13.368",
+    "syrupy",
+    # Transitive test dependencies that publish no wheels; use the
+    # vendored prebuilt wheels so no sdist build is needed.
+    "mock-open==1.4.0",
+    "pyric==0.1.6.3",
+]
+
+[tool.uv.sources]
+mock-open = { path = "wheels/mock_open-1.4.0-py3-none-any.whl" }
+pyric = { path = "wheels/pyric-0.1.6.3-py2.py3-none-any.whl" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Required by pytest-homeassistant-custom-component.
+asyncio_mode = "auto"
+addopts = "--strict-markers"
+
+[tool.coverage.run]
+source = ["custom_components/fritz_box_monitor"]
 
 [tool.ruff]
-target-version = "py313"
+target-version = "py314"
 line-length = 88
 
 [tool.ruff.lint]
@@ -26,9 +69,16 @@ select = [
 force-sort-within-sections = true
 combine-as-imports = true
 
+[tool.ruff.lint.per-file-ignores]
+# Test assertions are the specification; literal expectations are fine.
+"tests/**" = ["PLR2004"]
+
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.14"
 platform = "linux"
+# The integration and tests live in namespace packages.
+files = ["custom_components", "tests"]
+explicit_package_bases = true
 check_untyped_defs = true
 disallow_incomplete_defs = true
 disallow_untyped_calls = true
@@ -38,3 +88,8 @@ warn_redundant_casts = true
 warn_return_any = true
 warn_unused_configs = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+# The test harness package ships no type information.
+module = "pytest_homeassistant_custom_component.*"
+ignore_missing_imports = true

@@ -1,7 +1,6 @@
 """Data update coordinator for the FRITZ!Box Monitor integration."""
 
 import logging
-from datetime import timedelta
 from typing import override
 
 from homeassistant.config_entries import ConfigEntry

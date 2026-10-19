@@ -1,0 +1,64 @@
+{
+  "_comment": "Fake response of POST /data.lua (sid=...&page=docInfo). The channel layout follows data.channelDs/channelUs.docsis30/31 as scraped by sberk42/fritzbox_exporter for FRITZ!OS 7.29 cable boxes (keys: frequency, powerLevel, modulation, mse, corrErrors, nonCorrErrors). The 'doc' block carries device identity and connection status; its exact keys must be verified against a real FRITZ!Box recording and may be adjusted together with the client parser.",
+  "pid": "docInfo",
+  "sid": "88e33a10c8313b6f",
+  "data": {
+    "doc": {
+      "connectionStatus": "online",
+      "serialNumber": "123456789012",
+      "modelName": "FRITZ!Box 6591 Cable",
+      "fwVersion": "7.29"
+    },
+    "channelDs": {
+      "docsis30": {
+        "1": {
+          "frequency": 306000000,
+          "powerLevel": 3.5,
+          "modulation": "256QAM",
+          "mse": 39.8,
+          "corrErrors": 12,
+          "nonCorrErrors": 0
+        },
+        "5": {
+          "frequency": 330000000,
+          "powerLevel": 4.1,
+          "modulation": "256QAM",
+          "mse": 40.2,
+          "corrErrors": 340,
+          "nonCorrErrors": 7
+        }
+      },
+      "docsis31": {
+        "33": {
+          "frequency": 858000000,
+          "powerLevel": 6.5,
+          "modulation": "4096QAM",
+          "mse": 43.1,
+          "corrErrors": 0,
+          "nonCorrErrors": 0
+        }
+      }
+    },
+    "channelUs": {
+      "docsis30": {
+        "4": {
+          "frequency": 21000000,
+          "powerLevel": 110.5,
+          "modulation": "64QAM"
+        },
+        "6": {
+          "frequency": 39000000,
+          "powerLevel": 111.0,
+          "modulation": "64QAM"
+        }
+      },
+      "docsis31": {
+        "10": {
+          "frequency": 57000000,
+          "powerLevel": 112.5,
+          "modulation": "4096QAM"
+        }
+      }
+    }
+  }
+}

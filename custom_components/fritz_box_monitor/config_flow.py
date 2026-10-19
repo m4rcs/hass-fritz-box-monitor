@@ -3,11 +3,10 @@
 import logging
 from typing import Any, override
 
-import voluptuous as vol
-
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
+import probatio
 
 from .client import FritzBoxMonitorClient, FritzBoxMonitorError
 from .const import DEFAULT_HOST, DOMAIN, NAME
@@ -15,9 +14,9 @@ from .const import DEFAULT_HOST, DOMAIN, NAME
 _LOGGER = logging.getLogger(__name__)
 
 # TODO: extend the schema once it is clear what the client needs
-# (credentials for TR-064 access, polling interval, ...).
-STEP_USER_DATA_SCHEMA = vol.Schema(
-    {vol.Required(CONF_HOST, default=DEFAULT_HOST): str}
+# (credentials for the web UI login, polling interval, ...).
+STEP_USER_DATA_SCHEMA = probatio.Schema(
+    {probatio.Required(CONF_HOST, default=DEFAULT_HOST): str}
 )
 
 

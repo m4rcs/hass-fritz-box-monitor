@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Response of GET /login_sid.lua?version=2 for an unauthenticated session.
+  The challenge has the v2 format version$iterations$salt1$iterations2$salt2
+  and matches FAKE_CHALLENGE in tests/components/fritz_box_monitor/const.py,
+  so the expected PBKDF2 login response is a known constant.
+-->
+<SessionInfo>
+    <SID>0000000000000000</SID>
+    <Challenge>2$60000$0a1b2c3d4e5f6a7b$1$7f6e5d4c3b2a1f0e</Challenge>
+    <BlockTime>0</BlockTime>
+    <Rights></Rights>
+</SessionInfo>

@@ -4,19 +4,19 @@ The integration never talks to the modem itself; all device access goes
 through this module, mirroring the library role from the Home Assistant
 integration tutorial (step 1).
 
-TODO: decide how to reach the modem and implement the client. Candidate
-approaches:
+The client speaks the web UI protocol of FRITZ!OS cable boxes:
 
-- TR-064/TR-069 SOAP API via a small aiohttp client (no extra dependency)
-- the data.lua endpoints of the FRITZ!Box web UI for DOCSIS details
-- delegate to a dedicated PyPI library once one is chosen, and list it
-  in the ``requirements`` key of manifest.json
+- authentication via ``login_sid.lua?version=2`` (PBKDF2 challenge-response)
+- data via the JSON endpoints of ``data.lua`` (``page=docInfo`` for the
+  DOCSIS channel statistics)
 
-Whatever the approach, the interface below keeps the properties Home
-Assistant expects from a device library: an async API that never blocks
-the event loop, a caller-provided aiohttp session, and its own
-exceptions so the integration can tell a connection problem apart from
-anything else.
+The interface below keeps the properties Home Assistant expects from a
+device library: an async API that never blocks the event loop, a
+caller-provided aiohttp session, and its own exceptions so the
+integration can tell a connection problem apart from anything else.
+
+TODO: implement the client; tests/components/fritz_box_monitor/
+test_client.py drives the implementation (TDD).
 """
 
 from dataclasses import dataclass
@@ -24,19 +24,34 @@ from dataclasses import dataclass
 from aiohttp import ClientSession
 
 
-@dataclass
-class CableModemStatus:
-    """Status snapshot of the FRITZ!Box cable modem.
+@dataclass(frozen=True)
+class DocsisChannel:
+    """A single DOCSIS channel of the cable modem.
 
-    TODO: replace the placeholder fields with the real data the modem
-    exposes (DOCSIS channel stats, signal-to-noise ratio, power levels,
-    error counters, connection state, ...).
+    ``snr`` and the error counters are only exposed for downstream
+    channels and are ``None`` for upstream channels.
     """
+
+    channel_id: int
+    docsis_version: str
+    frequency: int  # Hz
+    power: float  # dBuV
+    modulation: str
+    snr: float | None = None  # dB
+    correctable_errors: int | None = None
+    uncorrectable_errors: int | None = None
+
+
+@dataclass(frozen=True)
+class CableModemStatus:
+    """Status snapshot of the FRITZ!Box cable modem."""
 
     serial_number: str
     model: str
     firmware: str
     connection_status: str
+    downstream: tuple[DocsisChannel, ...]
+    upstream: tuple[DocsisChannel, ...]
 
 
 class FritzBoxMonitorError(Exception):
@@ -54,10 +69,19 @@ class FritzBoxMonitorAuthError(FritzBoxMonitorError):
 class FritzBoxMonitorClient:
     """Talk to a FRITZ!Box cable modem."""
 
-    def __init__(self, host: str, session: ClientSession) -> None:
+    def __init__(
+        self,
+        host: str,
+        session: ClientSession,
+        *,
+        username: str = "",
+        password: str = "",
+    ) -> None:
         """Initialize the client."""
         self.host = host
         self.session = session
+        self._username = username
+        self._password = password
 
     async def get_status(self) -> CableModemStatus:
         """Return the current status of the cable modem.
