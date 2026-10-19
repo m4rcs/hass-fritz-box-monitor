@@ -1,0 +1,33 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "host": "Host"
+        },
+        "data_description": {
+          "host": "The hostname or IP address of your FRITZ!Box cable modem."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "exceptions": {
+    "update_failed": {
+      "message": "An error occurred while fetching data from the cable modem."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "connection_status": {
+        "name": "Connection status"
+      }
+    }
+  }
+}

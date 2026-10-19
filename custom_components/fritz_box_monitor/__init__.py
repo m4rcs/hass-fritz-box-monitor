@@ -1,0 +1,45 @@
+"""The FRITZ!Box Monitor integration.
+
+Monitors the connection of an AVM FRITZ!Box cable modem and exposes its
+cable (DOCSIS) line statistics as sensors.
+"""
+
+from homeassistant.const import CONF_HOST, Platform
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
+
+from .client import FritzBoxMonitorClient
+from .coordinator import FritzBoxMonitorConfigEntry, FritzBoxMonitorCoordinator
+
+_PLATFORMS: list[Platform] = [Platform.SENSOR]
+
+
+async def async_setup_entry(
+    hass: HomeAssistant, entry: FritzBoxMonitorConfigEntry
+) -> bool:
+    """Set up FRITZ!Box Monitor from a config entry."""
+    # TODO: replace the stub client with the real implementation; see
+    # client.py for the open decisions.
+    client = FritzBoxMonitorClient(
+        entry.data[CONF_HOST], session=async_get_clientsession(hass)
+    )
+
+    coordinator = FritzBoxMonitorCoordinator(hass, entry, client)
+
+    # Fetch the first data before any entity exists. When the modem is
+    # offline this raises ConfigEntryNotReady and Home Assistant retries
+    # the setup later (test-before-setup rule).
+    await coordinator.async_config_entry_first_refresh()
+
+    entry.runtime_data = coordinator
+
+    await hass.config_entries.async_forward_entry_setups(entry, _PLATFORMS)
+
+    return True
+
+
+async def async_unload_entry(
+    hass: HomeAssistant, entry: FritzBoxMonitorConfigEntry
+) -> bool:
+    """Unload a config entry."""
+    return await hass.config_entries.async_unload_platforms(entry, _PLATFORMS)
