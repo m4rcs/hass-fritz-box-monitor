@@ -1,0 +1,15 @@
+# serializer version: 1
+# name: test_sensor_snapshot
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Connection status',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:lan-connect',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_connection_status',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'online',
+  })
+# ---
