@@ -12,6 +12,10 @@ FAKE_PASSWORD = "test-password"
 # SID of a logged-in session, as served by login_success.xml.
 FAKE_SID = "88e33a10c8313b6f"
 
+# Seconds the fake FRITZ!Box blocks login attempts in the blocked
+# fixtures (login_challenge_blocked.xml, login_blocked.xml).
+FAKE_BLOCK_TIME = 60
+
 # A fixed v2 login challenge (version$iterations$salt1$iterations2$salt2),
 # as served by login_challenge.xml.
 FAKE_CHALLENGE = "2$60000$0a1b2c3d4e5f6a7b$1$7f6e5d4c3b2a1f0e"

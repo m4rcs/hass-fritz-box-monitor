@@ -12,6 +12,8 @@
     },
     "error": {
       "cannot_connect": "Failed to connect",
+      "invalid_auth": "Incorrect username or password",
+      "login_blocked": "The FRITZ!Box has temporarily blocked login attempts after too many failures. Try again in {block_time} seconds.",
       "unknown": "Unexpected error"
     },
     "abort": {

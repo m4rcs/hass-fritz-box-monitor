@@ -21,10 +21,12 @@ from custom_components.fritz_box_monitor.client import (
     FritzBoxMonitorAuthError,
     FritzBoxMonitorClient,
     FritzBoxMonitorConnectionError,
+    FritzBoxMonitorLoginBlockedError,
 )
 
 from .const import (
     FAKE_BASE_URL,
+    FAKE_BLOCK_TIME,
     FAKE_HOST,
     FAKE_LOGIN_RESPONSE,
     FAKE_PASSWORD,
@@ -225,6 +227,47 @@ async def test_data_page_error_raises_connection_error(
 
     with pytest.raises(FritzBoxMonitorConnectionError):
         await _client(hass).get_status()
+
+
+async def test_blocked_challenge_raises_login_blocked(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """A block during the challenge aborts before any login attempt."""
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_challenge_blocked.xml"),
+    )
+
+    with pytest.raises(FritzBoxMonitorLoginBlockedError) as exc_info:
+        await _client(hass).get_status()
+
+    assert exc_info.value.block_time == FAKE_BLOCK_TIME
+    assert isinstance(exc_info.value, FritzBoxMonitorAuthError)
+    assert _calls_to(aioclient_mock, "login_sid.lua", "POST") == []
+
+
+async def test_blocked_login_raises_login_blocked(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """A block reported by the login POST maps to the blocked error."""
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_challenge.xml"),
+    )
+    aioclient_mock.post(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_blocked.xml"),
+    )
+
+    with pytest.raises(FritzBoxMonitorLoginBlockedError) as exc_info:
+        await _client(hass).get_status()
+
+    assert exc_info.value.block_time == FAKE_BLOCK_TIME
+    assert isinstance(exc_info.value, FritzBoxMonitorAuthError)
 
 
 async def test_expired_sid_triggers_relogin(

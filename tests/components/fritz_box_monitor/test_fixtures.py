@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 
 from .conftest import FIXTURES_DIR
 from .const import (
+    FAKE_BLOCK_TIME,
     FAKE_CHALLENGE,
     FAKE_LOGIN_RESPONSE,
     FAKE_PASSWORD,
@@ -39,6 +40,21 @@ def test_login_denied_fixture_keeps_zeroed_sid() -> None:
     """A rejected login leaves the SID zeroed."""
     root = ET.fromstring(_fixture("login_denied.xml"))
     assert root.findtext("SID") == "0" * 16
+
+
+def test_blocked_challenge_fixture_reports_block_time() -> None:
+    """A blocked challenge serves no challenge and a zeroed SID."""
+    root = ET.fromstring(_fixture("login_challenge_blocked.xml"))
+    assert root.findtext("SID") == "0" * 16
+    assert root.findtext("Challenge") == ""
+    assert int(root.findtext("BlockTime") or 0) == FAKE_BLOCK_TIME
+
+
+def test_blocked_login_fixture_reports_block_time() -> None:
+    """A blocked login keeps the SID zeroed and reports the block."""
+    root = ET.fromstring(_fixture("login_blocked.xml"))
+    assert root.findtext("SID") == "0" * 16
+    assert int(root.findtext("BlockTime") or 0) == FAKE_BLOCK_TIME
 
 
 def test_pbkdf2_response_matches_const() -> None:

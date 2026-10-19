@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Response of POST /login_sid.lua?version=2 after a rejected login that
+  crossed the failed-attempts limit: login attempts are now blocked for
+  BlockTime seconds.
+-->
+<SessionInfo>
+    <SID>0000000000000000</SID>
+    <Challenge>2$60000$0a1b2c3d4e5f6a7b$1$7f6e5d4c3b2a1f0e</Challenge>
+    <BlockTime>60</BlockTime>
+    <Rights></Rights>
+</SessionInfo>

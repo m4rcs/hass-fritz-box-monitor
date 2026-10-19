@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Response of GET /login_sid.lua?version=2 while the box has blocked
+  further login attempts (too many failures): no challenge is served,
+  the SID stays zeroed and BlockTime counts the remaining seconds.
+-->
+<SessionInfo>
+    <SID>0000000000000000</SID>
+    <Challenge></Challenge>
+    <BlockTime>60</BlockTime>
+    <Rights></Rights>
+</SessionInfo>
