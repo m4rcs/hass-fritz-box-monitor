@@ -1,17 +1,25 @@
 """Data update coordinator for the FRITZ!Box Monitor integration."""
 
+from datetime import timedelta
 import logging
 from typing import override
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
 
-from .client import CableModemStatus, FritzBoxMonitorClient, FritzBoxMonitorError
-from .const import DOMAIN, UPDATE_INTERVAL
+from .client import (
+    CableModemStatus,
+    FritzBoxMonitorAuthError,
+    FritzBoxMonitorClient,
+    FritzBoxMonitorError,
+    FritzBoxMonitorLoginBlockedError,
+)
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -30,6 +38,7 @@ class FritzBoxMonitorCoordinator(DataUpdateCoordinator[CableModemStatus]):
         hass: HomeAssistant,
         config_entry: FritzBoxMonitorConfigEntry,
         client: FritzBoxMonitorClient,
+        update_interval: timedelta,
     ) -> None:
         """Initialize the coordinator."""
         super().__init__(
@@ -37,7 +46,7 @@ class FritzBoxMonitorCoordinator(DataUpdateCoordinator[CableModemStatus]):
             _LOGGER,
             config_entry=config_entry,
             name=DOMAIN,
-            update_interval=UPDATE_INTERVAL,
+            update_interval=update_interval,
         )
         self.client = client
 
@@ -46,6 +55,17 @@ class FritzBoxMonitorCoordinator(DataUpdateCoordinator[CableModemStatus]):
         """Fetch the latest status from the cable modem."""
         try:
             return await self.client.get_status()
+        except FritzBoxMonitorLoginBlockedError as err:
+            # A blocked login expires on its own; keep retrying.
+            raise UpdateFailed(
+                translation_domain=DOMAIN,
+                translation_key="update_failed",
+            ) from err
+        except FritzBoxMonitorAuthError as err:
+            # Wrong credentials: point the user at the reauth flow. The
+            # explicit start also covers scheduled background refreshes.
+            self.config_entry.async_start_reauth(self.hass)
+            raise ConfigEntryAuthFailed(str(err)) from err
         except FritzBoxMonitorError as err:
             raise UpdateFailed(
                 translation_domain=DOMAIN,

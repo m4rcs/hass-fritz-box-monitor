@@ -1,6 +1,26 @@
 {
   "config": {
     "step": {
+      "reauth_confirm": {
+        "data": {
+          "password": "Password"
+        },
+        "data_description": {
+          "password": "The new password of the FRITZ!Box user account."
+        }
+      },
+      "reconfigure": {
+        "data": {
+          "host": "Host",
+          "password": "Password",
+          "username": "Username"
+        },
+        "data_description": {
+          "host": "The hostname or IP address of your FRITZ!Box cable modem.",
+          "password": "The password of the FRITZ!Box user account.",
+          "username": "The user to log in as. Leave empty for boxes configured for password-only login."
+        }
+      },
       "user": {
         "data": {
           "host": "Host",
@@ -21,7 +41,23 @@
       "unknown": "Unexpected error"
     },
     "abort": {
-      "already_configured": "Device is already configured"
+      "already_configured": "Device is already configured",
+      "unique_id_mismatch": "The modem that answered is not the configured one (different MAC address). Set it up as a new device instead."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "update_interval": "Poll interval (seconds)"
+        },
+        "data_description": {
+          "update_interval": "How often the cable modem status is fetched. Minimum 10 seconds."
+        }
+      }
+    },
+    "error": {
+      "interval_too_low": "The poll interval must be at least 10 seconds."
     }
   },
   "exceptions": {

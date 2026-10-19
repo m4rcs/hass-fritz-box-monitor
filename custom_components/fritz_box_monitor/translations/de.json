@@ -1,6 +1,26 @@
 {
   "config": {
     "step": {
+      "reauth_confirm": {
+        "data": {
+          "password": "Kennwort"
+        },
+        "data_description": {
+          "password": "Das neue Kennwort des FRITZ!Box-Benutzerkontos."
+        }
+      },
+      "reconfigure": {
+        "data": {
+          "host": "Host",
+          "password": "Kennwort",
+          "username": "Benutzername"
+        },
+        "data_description": {
+          "host": "Der Hostname oder die IP-Adresse deines FRITZ!Box-Kabelmodems.",
+          "password": "Das Kennwort des FRITZ!Box-Benutzerkontos.",
+          "username": "Der Benutzer f\u00fcr die Anmeldung. Leer lassen bei Boxen, die nur mit Kennwort angemeldet werden."
+        }
+      },
       "user": {
         "data": {
           "host": "Host",
@@ -21,7 +41,23 @@
       "unknown": "Unerwarteter Fehler"
     },
     "abort": {
-      "already_configured": "Ger\u00e4t ist bereits konfiguriert"
+      "already_configured": "Ger\u00e4t ist bereits konfiguriert",
+      "unique_id_mismatch": "Das Modem, das geantwortet hat, ist nicht das konfigurierte (andere MAC-Adresse). Richte es als neues Ger\u00e4t ein."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "update_interval": "Aktualisierungsintervall (Sekunden)"
+        },
+        "data_description": {
+          "update_interval": "Wie oft der Status des Kabelmodems abgerufen wird. Minimum 10 Sekunden."
+        }
+      }
+    },
+    "error": {
+      "interval_too_low": "Das Aktualisierungsintervall muss mindestens 10 Sekunden betragen."
     }
   },
   "exceptions": {

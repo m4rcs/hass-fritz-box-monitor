@@ -4,6 +4,8 @@ Monitors the connection of an AVM FRITZ!Box cable modem and exposes its
 cable (DOCSIS) line statistics as sensors.
 """
 
+from datetime import timedelta
+
 from homeassistant.const import (
     CONF_HOST,
     CONF_PASSWORD,
@@ -14,6 +16,10 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .client import FritzBoxMonitorClient
+from .const import (
+    CONF_UPDATE_INTERVAL,
+    DEFAULT_UPDATE_INTERVAL_SECONDS,
+)
 from .coordinator import FritzBoxMonitorConfigEntry, FritzBoxMonitorCoordinator
 
 _PLATFORMS: list[Platform] = [Platform.SENSOR]
@@ -30,7 +36,12 @@ async def async_setup_entry(
         password=entry.data[CONF_PASSWORD],
     )
 
-    coordinator = FritzBoxMonitorCoordinator(hass, entry, client)
+    interval = timedelta(
+        seconds=entry.options.get(
+            CONF_UPDATE_INTERVAL, DEFAULT_UPDATE_INTERVAL_SECONDS
+        )
+    )
+    coordinator = FritzBoxMonitorCoordinator(hass, entry, client, interval)
 
     # Fetch the first data before any entity exists. When the modem is
     # offline this raises ConfigEntryNotReady and Home Assistant retries

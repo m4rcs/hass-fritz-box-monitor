@@ -1,7 +1,5 @@
 """Constants for the FRITZ!Box Monitor integration."""
 
-from datetime import timedelta
-
 DOMAIN = "fritz_box_monitor"
 NAME = "FRITZ!Box Monitor"
 
@@ -9,7 +7,8 @@ NAME = "FRITZ!Box Monitor"
 # hostname of AVM devices.
 DEFAULT_HOST = "fritz.box"
 
-# Interval at which the coordinator polls the cable modem.
-# TODO: revisit once it is clear how often the modem refreshes its
-# DOCSIS counters, and whether the interval should be user configurable.
-UPDATE_INTERVAL = timedelta(seconds=30)
+# Key of the user-configurable poll interval (in seconds) in the config
+# entry options.
+CONF_UPDATE_INTERVAL = "update_interval"
+DEFAULT_UPDATE_INTERVAL_SECONDS = 30
+MIN_UPDATE_INTERVAL_SECONDS = 10
