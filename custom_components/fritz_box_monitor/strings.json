@@ -105,6 +105,12 @@
       },
       "us_rate": {
         "name": "Upstream rate"
+      },
+      "ds_channel": {
+        "name": "Downstream channel {channel}"
+      },
+      "us_channel": {
+        "name": "Upstream channel {channel}"
       }
     }
   }

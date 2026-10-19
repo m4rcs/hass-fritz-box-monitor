@@ -77,6 +77,153 @@
     'state': '52.5',
   })
 # ---
+# name: test_sensor_snapshot.13
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 986,
+      'docsis_version': '3.0',
+      'frequency_mhz': 618.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 8',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_8',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.0',
+  })
+# ---
+# name: test_sensor_snapshot.14
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 616,
+      'docsis_version': '3.0',
+      'frequency_mhz': 570.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 3',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_3',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.6',
+  })
+# ---
+# name: test_sensor_snapshot.15
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 669,
+      'docsis_version': '3.0',
+      'frequency_mhz': 578.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 4',
+      'modulation': '256QAM',
+      'snr_db': 38.6,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_4',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.6',
+  })
+# ---
+# name: test_sensor_snapshot.16
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 854,
+      'docsis_version': '3.0',
+      'frequency_mhz': 586.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 5',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_5',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.5',
+  })
+# ---
+# name: test_sensor_snapshot.17
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 871,
+      'docsis_version': '3.0',
+      'frequency_mhz': 594.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 6',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_6',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.4',
+  })
+# ---
+# name: test_sensor_snapshot.18
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 929,
+      'docsis_version': '3.0',
+      'frequency_mhz': 602.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 7',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_7',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.3',
+  })
+# ---
+# name: test_sensor_snapshot.19
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 900,
+      'docsis_version': '3.0',
+      'frequency_mhz': 626.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 9',
+      'modulation': '256QAM',
+      'snr_db': 38.6,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_9',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.0',
+  })
+# ---
 # name: test_sensor_snapshot.2
   StateSnapshot({
     'attributes': ReadOnlyDict({
@@ -90,6 +237,216 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '5',
+  })
+# ---
+# name: test_sensor_snapshot.20
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 909,
+      'docsis_version': '3.0',
+      'frequency_mhz': 634.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 10',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_10',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.3',
+  })
+# ---
+# name: test_sensor_snapshot.21
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 936,
+      'docsis_version': '3.0',
+      'frequency_mhz': 642.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 11',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_11',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.5',
+  })
+# ---
+# name: test_sensor_snapshot.22
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 982,
+      'docsis_version': '3.0',
+      'frequency_mhz': 650.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 12',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_12',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.5',
+  })
+# ---
+# name: test_sensor_snapshot.23
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 1162,
+      'docsis_version': '3.0',
+      'frequency_mhz': 658.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 13',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_13',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.3',
+  })
+# ---
+# name: test_sensor_snapshot.24
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 1145,
+      'docsis_version': '3.0',
+      'frequency_mhz': 666.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 14',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_14',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.6',
+  })
+# ---
+# name: test_sensor_snapshot.25
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 1074,
+      'docsis_version': '3.0',
+      'frequency_mhz': 674.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 15',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_15',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.5',
+  })
+# ---
+# name: test_sensor_snapshot.26
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 1030,
+      'docsis_version': '3.0',
+      'frequency_mhz': 682.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 16',
+      'modulation': '256QAM',
+      'snr_db': 40.9,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_16',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.7',
+  })
+# ---
+# name: test_sensor_snapshot.27
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 969,
+      'docsis_version': '3.0',
+      'frequency_mhz': 690.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 17',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_17',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '16.8',
+  })
+# ---
+# name: test_sensor_snapshot.28
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 0,
+      'docsis_version': '3.0',
+      'frequency_mhz': 114.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 1',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_1',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '18.4',
+  })
+# ---
+# name: test_sensor_snapshot.29
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 1,
+      'docsis_version': '3.0',
+      'frequency_mhz': 130.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 2',
+      'modulation': '256QAM',
+      'snr_db': 40.9,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_2',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '17.6',
   })
 # ---
 # name: test_sensor_snapshot.3
@@ -108,6 +465,211 @@
     'state': '14.2',
   })
 # ---
+# name: test_sensor_snapshot.30
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 892,
+      'docsis_version': '3.0',
+      'frequency_mhz': 698.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 18',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_18',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '17.0',
+  })
+# ---
+# name: test_sensor_snapshot.31
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 731,
+      'docsis_version': '3.0',
+      'frequency_mhz': 706.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 19',
+      'modulation': '256QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_19',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '17.4',
+  })
+# ---
+# name: test_sensor_snapshot.32
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 660,
+      'docsis_version': '3.0',
+      'frequency_mhz': 714.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 20',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_20',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '17.8',
+  })
+# ---
+# name: test_sensor_snapshot.33
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 1674,
+      'docsis_version': '3.0',
+      'frequency_mhz': 722.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 21',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 1120,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_21',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '18.2',
+  })
+# ---
+# name: test_sensor_snapshot.34
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 6518,
+      'docsis_version': '3.0',
+      'frequency_mhz': 730.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 22',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 1985,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_22',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '18.4',
+  })
+# ---
+# name: test_sensor_snapshot.35
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 466,
+      'docsis_version': '3.0',
+      'frequency_mhz': 738.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 23',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_23',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '18.6',
+  })
+# ---
+# name: test_sensor_snapshot.36
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'correctable_errors': 421,
+      'docsis_version': '3.0',
+      'frequency_mhz': 746.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 24',
+      'modulation': '256QAM',
+      'snr_db': 40.4,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 0,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_24',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '18.4',
+  })
+# ---
+# name: test_sensor_snapshot.37
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.1',
+      'frequency_mhz': 229.975,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 193',
+      'modulation': '4096QAM',
+      'snr_db': 43.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 130,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_193',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '17.1',
+  })
+# ---
+# name: test_sensor_snapshot.38
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.1',
+      'frequency_mhz': 805.975,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 194',
+      'modulation': '4096QAM',
+      'snr_db': 39.0,
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      'uncorrectable_errors': 178,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channel_194',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '14.2',
+  })
+# ---
+# name: test_sensor_snapshot.39
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.0',
+      'frequency_mhz': 30.8,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 1',
+      'modulation': '64QAM',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_channel_1',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '28.8',
+  })
+# ---
 # name: test_sensor_snapshot.4
   StateSnapshot({
     'attributes': ReadOnlyDict({
@@ -122,6 +684,78 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '18.6',
+  })
+# ---
+# name: test_sensor_snapshot.40
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.0',
+      'frequency_mhz': 51.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 4',
+      'modulation': '64QAM',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_channel_4',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '29.5',
+  })
+# ---
+# name: test_sensor_snapshot.41
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.0',
+      'frequency_mhz': 44.6,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 3',
+      'modulation': '64QAM',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_channel_3',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '29.0',
+  })
+# ---
+# name: test_sensor_snapshot.42
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.0',
+      'frequency_mhz': 37.2,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 2',
+      'modulation': '64QAM',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_channel_2',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '29.0',
+  })
+# ---
+# name: test_sensor_snapshot.43
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'docsis_version': '3.1',
+      'frequency_mhz': 47.275,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 41',
+      'modulation': '128QAM',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_channel_41',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '24.0',
   })
 # ---
 # name: test_sensor_snapshot.5

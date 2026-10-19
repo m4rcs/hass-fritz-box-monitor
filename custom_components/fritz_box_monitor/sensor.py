@@ -10,11 +10,13 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
+from homeassistant.const import STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.entity_registry import EntityCategory
 from homeassistant.helpers.typing import StateType
 
-from .client import CableModemStatus
+from .client import CableModemStatus, DocsisChannel
 from .coordinator import FritzBoxMonitorConfigEntry, FritzBoxMonitorCoordinator
 from .entity import FritzBoxMonitorEntity
 
@@ -182,10 +184,21 @@ async def async_setup_entry(
 ) -> None:
     """Set up the FRITZ!Box Monitor sensors."""
     coordinator = entry.runtime_data
+    status = coordinator.data
 
     async_add_entities(
         FritzBoxMonitorSensor(coordinator, description)
         for description in SENSORS
+    )
+    # One diagnostic sensor per DOCSIS channel. Channels added later
+    # (operator plan changes) only appear after a reload.
+    async_add_entities(
+        FritzBoxMonitorChannelSensor(coordinator, channel, downstream=True)
+        for channel in status.downstream
+    )
+    async_add_entities(
+        FritzBoxMonitorChannelSensor(coordinator, channel, downstream=False)
+        for channel in status.upstream
     )
 
 
@@ -209,3 +222,74 @@ class FritzBoxMonitorSensor(FritzBoxMonitorEntity, SensorEntity):
     def native_value(self) -> StateType:
         """Return the value of the sensor."""
         return self.entity_description.value_fn(self.coordinator.data)
+
+
+class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
+    """A single DOCSIS channel of the cable modem.
+
+    State is the channel power; the remaining channel data is exposed
+    as attributes. The channel is resolved from the current coordinator
+    data by id on every read.
+    """
+
+    def __init__(
+        self,
+        coordinator: FritzBoxMonitorCoordinator,
+        channel: DocsisChannel,
+        downstream: bool,
+    ) -> None:
+        """Initialize the channel sensor."""
+        super().__init__(coordinator)
+        self._downstream = downstream
+        self._channel_id = channel.channel_id
+        self._attr_entity_category = EntityCategory.DIAGNOSTIC
+        self._attr_native_unit_of_measurement = "dBuV"
+        self._attr_state_class = SensorStateClass.MEASUREMENT
+
+        direction = "ds" if downstream else "us"
+        self._attr_unique_id = (
+            f"{coordinator.data.mac}_{direction}_channel_{channel.channel_id}"
+        )
+        self._attr_translation_key = f"{direction}_channel"
+        self._attr_translation_placeholders = {
+            "channel": str(channel.channel_id)
+        }
+
+    def _current_channel(self) -> DocsisChannel | None:
+        """Return this channel from the latest coordinator data."""
+        status = self.coordinator.data
+        channels = status.downstream if self._downstream else status.upstream
+        return next(
+            (
+                channel
+                for channel in channels
+                if channel.channel_id == self._channel_id
+            ),
+            None,
+        )
+
+    @override
+    @property
+    def native_value(self) -> StateType:
+        """Return the current power of the channel."""
+        channel = self._current_channel()
+        return channel.power if channel is not None else STATE_UNKNOWN
+
+    @property
+    def extra_state_attributes(self) -> dict[str, StateType]:
+        """Expose the remaining channel data as attributes."""
+        channel = self._current_channel()
+        if channel is None:
+            return {}
+        attributes: dict[str, StateType] = {
+            "docsis_version": channel.docsis_version,
+            "frequency_mhz": channel.frequency,
+            "modulation": channel.modulation,
+        }
+        if channel.snr is not None:
+            attributes["snr_db"] = channel.snr
+        if channel.correctable_errors is not None:
+            attributes["correctable_errors"] = channel.correctable_errors
+        if channel.uncorrectable_errors is not None:
+            attributes["uncorrectable_errors"] = channel.uncorrectable_errors
+        return attributes
