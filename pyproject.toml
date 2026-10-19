@@ -71,7 +71,8 @@ combine-as-imports = true
 
 [tool.ruff.lint.per-file-ignores]
 # Test assertions are the specification; literal expectations are fine.
-"tests/**" = ["PLR2004"]
+# Test helper factories may take many arguments.
+"tests/**" = ["PLR2004", "PLR0913", "PLR0917"]
 
 [tool.mypy]
 python_version = "3.14"

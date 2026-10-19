@@ -4,9 +4,15 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from typing import override
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.typing import StateType
 
 from .client import CableModemStatus
 from .coordinator import FritzBoxMonitorConfigEntry, FritzBoxMonitorCoordinator
@@ -17,20 +23,154 @@ from .entity import FritzBoxMonitorEntity
 class FritzBoxMonitorSensorEntityDescription(SensorEntityDescription):
     """Describe a FRITZ!Box Monitor sensor."""
 
-    value_fn: Callable[[CableModemStatus], float | int | str]
+    value_fn: Callable[[CableModemStatus], StateType]
+
+
+def _extreme(values: list[float], *, highest: bool) -> float | None:
+    """Return the highest or lowest value, or None without channels."""
+    if not values:
+        return None
+    return max(values) if highest else min(values)
+
+
+def _downstream_power(
+    status: CableModemStatus, *, highest: bool
+) -> float | None:
+    """Min or max downstream power level in dBuV."""
+    return _extreme(
+        [channel.power for channel in status.downstream], highest=highest
+    )
+
+
+def _upstream_power(
+    status: CableModemStatus, *, highest: bool
+) -> float | None:
+    """Min or max upstream power level in dBuV."""
+    return _extreme(
+        [channel.power for channel in status.upstream], highest=highest
+    )
+
+
+def _downstream_snr(
+    status: CableModemStatus, *, highest: bool
+) -> float | None:
+    """Min or max downstream signal-to-noise ratio in dB."""
+    return _extreme(
+        [
+            channel.snr
+            for channel in status.downstream
+            if channel.snr is not None
+        ],
+        highest=highest,
+    )
 
 
 SENSORS: tuple[FritzBoxMonitorSensorEntityDescription, ...] = (
-    # TODO: replace this placeholder with the real cable modem metrics:
-    # downstream/upstream signal-to-noise ratio and power levels,
-    # correctable/uncorrectable error counters, connection state, ...
-    # Give measurement sensors a device_class, a unit and
-    # SensorStateClass.MEASUREMENT so they convert and statistics work.
     FritzBoxMonitorSensorEntityDescription(
         key="connection_status",
         translation_key="connection_status",
         icon="mdi:lan-connect",
         value_fn=lambda status: status.connection_status,
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_channel_count",
+        translation_key="ds_channel_count",
+        icon="mdi:arrow-down-bold",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: len(status.downstream),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="us_channel_count",
+        translation_key="us_channel_count",
+        icon="mdi:arrow-up-bold",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: len(status.upstream),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_power_min",
+        translation_key="ds_power_min",
+        icon="mdi:arrow-down-bold",
+        native_unit_of_measurement="dBuV",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: _downstream_power(status, highest=False),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_power_max",
+        translation_key="ds_power_max",
+        icon="mdi:arrow-down-bold",
+        native_unit_of_measurement="dBuV",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: _downstream_power(status, highest=True),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="us_power_min",
+        translation_key="us_power_min",
+        icon="mdi:arrow-up-bold",
+        native_unit_of_measurement="dBuV",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: _upstream_power(status, highest=False),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="us_power_max",
+        translation_key="us_power_max",
+        icon="mdi:arrow-up-bold",
+        native_unit_of_measurement="dBuV",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: _upstream_power(status, highest=True),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_snr_min",
+        translation_key="ds_snr_min",
+        icon="mdi:signal",
+        native_unit_of_measurement="dB",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: _downstream_snr(status, highest=False),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_snr_max",
+        translation_key="ds_snr_max",
+        icon="mdi:signal",
+        native_unit_of_measurement="dB",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: _downstream_snr(status, highest=True),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_correctable_errors",
+        translation_key="ds_correctable_errors",
+        icon="mdi:counter",
+        state_class=SensorStateClass.TOTAL,
+        value_fn=lambda status: sum(
+            channel.correctable_errors or 0
+            for channel in status.downstream
+        ),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_uncorrectable_errors",
+        translation_key="ds_uncorrectable_errors",
+        icon="mdi:counter",
+        state_class=SensorStateClass.TOTAL,
+        value_fn=lambda status: sum(
+            channel.uncorrectable_errors or 0
+            for channel in status.downstream
+        ),
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="ds_rate",
+        translation_key="ds_rate",
+        icon="mdi:transfer-down",
+        device_class=SensorDeviceClass.DATA_RATE,
+        native_unit_of_measurement="Mbit/s",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: status.ds_rate,
+    ),
+    FritzBoxMonitorSensorEntityDescription(
+        key="us_rate",
+        translation_key="us_rate",
+        icon="mdi:transfer-up",
+        device_class=SensorDeviceClass.DATA_RATE,
+        native_unit_of_measurement="Mbit/s",
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda status: status.us_rate,
     ),
 )
 
@@ -62,12 +202,10 @@ class FritzBoxMonitorSensor(FritzBoxMonitorEntity, SensorEntity):
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = description
-        self._attr_unique_id = (
-            f"{coordinator.data.serial_number}_{description.key}"
-        )
+        self._attr_unique_id = f"{coordinator.data.mac}_{description.key}"
 
     @override
     @property
-    def native_value(self) -> float | int | str:
+    def native_value(self) -> StateType:
         """Return the value of the sensor."""
         return self.entity_description.value_fn(self.coordinator.data)

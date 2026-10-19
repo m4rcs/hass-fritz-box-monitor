@@ -10,6 +10,196 @@
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
-    'state': 'online',
+    'state': 'ready',
+  })
+# ---
+# name: test_sensor_snapshot.1
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channels',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:arrow-down-bold',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_channels',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '26',
+  })
+# ---
+# name: test_sensor_snapshot.10
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream uncorrectable errors',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:counter',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_uncorrectable_errors',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '3413',
+  })
+# ---
+# name: test_sensor_snapshot.11
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'data_rate',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream rate',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:transfer-down',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'Mbit/s',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_rate',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1126.4',
+  })
+# ---
+# name: test_sensor_snapshot.12
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'data_rate',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream rate',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:transfer-up',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'Mbit/s',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_rate',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '52.5',
+  })
+# ---
+# name: test_sensor_snapshot.2
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channels',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:arrow-up-bold',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_channels',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '5',
+  })
+# ---
+# name: test_sensor_snapshot.3
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream power (min)',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:arrow-down-bold',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_power_min',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '14.2',
+  })
+# ---
+# name: test_sensor_snapshot.4
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream power (max)',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:arrow-down-bold',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_power_max',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '18.6',
+  })
+# ---
+# name: test_sensor_snapshot.5
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream power (min)',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:arrow-up-bold',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_power_min',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '24.0',
+  })
+# ---
+# name: test_sensor_snapshot.6
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream power (max)',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:arrow-up-bold',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_upstream_power_max',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '29.5',
+  })
+# ---
+# name: test_sensor_snapshot.7
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream SNR (min)',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:signal',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dB',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_snr_min',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '38.6',
+  })
+# ---
+# name: test_sensor_snapshot.8
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream SNR (max)',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:signal',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dB',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_snr_max',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '43.0',
+  })
+# ---
+# name: test_sensor_snapshot.9
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream correctable errors',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:counter',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.fritz_box_monitor_downstream_correctable_errors',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '25395',
   })
 # ---

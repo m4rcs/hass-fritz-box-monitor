@@ -18,7 +18,7 @@ from custom_components.fritz_box_monitor.coordinator import (
     FritzBoxMonitorCoordinator,
 )
 
-from .const import FAKE_BASE_URL, FAKE_SERIAL
+from .const import FAKE_BASE_URL, FAKE_MAC
 
 
 def _coordinator(
@@ -46,7 +46,7 @@ async def test_setup_success(
     coordinator = mock_config_entry.runtime_data
     assert isinstance(coordinator, FritzBoxMonitorCoordinator)
     assert isinstance(coordinator.data, CableModemStatus)
-    assert coordinator.data.serial_number == FAKE_SERIAL
+    assert coordinator.data.mac == FAKE_MAC
 
 
 async def test_setup_failure_sets_up_retry(

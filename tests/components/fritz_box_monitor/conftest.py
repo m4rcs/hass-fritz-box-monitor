@@ -12,6 +12,10 @@ from typing import Any
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant_custom_component.test_util.aiohttp import (
+    AiohttpClientMockResponse,
+)
+from yarl import URL
 
 from custom_components.fritz_box_monitor.const import DOMAIN
 
@@ -39,7 +43,7 @@ def load_fritz_fixture() -> Callable[[str], str]:
 def mock_fritz_box(
     aioclient_mock: Any, load_fritz_fixture: Callable[[str], str]
 ) -> None:
-    """Fake a healthy FRITZ!Box: v2 login flow plus the docInfo page."""
+    """Fake a healthy FRITZ!Box: v2 login flow plus both data pages."""
     aioclient_mock.get(
         f"{FAKE_BASE_URL}/login_sid.lua?version=2",
         text=load_fritz_fixture("login_challenge.xml"),
@@ -48,9 +52,23 @@ def mock_fritz_box(
         f"{FAKE_BASE_URL}/login_sid.lua?version=2",
         text=load_fritz_fixture("login_success.xml"),
     )
-    aioclient_mock.post(
-        f"{FAKE_BASE_URL}/data.lua",
-        text=load_fritz_fixture("doc_info.json"),
+
+    # aioclient_mock matches routes by URL only (not by body), so one
+    # route serves both data.lua pages, dispatched on the page field.
+    pages = {
+        "docOv": load_fritz_fixture("doc_ov.json"),
+        "docInfo": load_fritz_fixture("doc_info.json"),
+    }
+
+    async def _serve_page(method: str, url: URL, data: Any) -> Any:
+        """Serve the canned response matching the requested page."""
+        page = str(dict(data or {}).get("page"))
+        return AiohttpClientMockResponse(method, URL(url), text=pages[page])
+
+    aioclient_mock.post(f"{FAKE_BASE_URL}/data.lua", side_effect=_serve_page)
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/api/v0/generic/uimodlogic",
+        text=load_fritz_fixture("uimodlogic.json"),
     )
 
 

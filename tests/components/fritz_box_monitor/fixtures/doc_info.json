@@ -1,64 +1,67 @@
 {
-  "_comment": "Fake response of POST /data.lua (sid=...&page=docInfo). The channel layout follows data.channelDs/channelUs.docsis30/31 as scraped by sberk42/fritzbox_exporter for FRITZ!OS 7.29 cable boxes (keys: frequency, powerLevel, modulation, mse, corrErrors, nonCorrErrors). The 'doc' block carries device identity and connection status; its exact keys must be verified against a real FRITZ!Box recording and may be adjusted together with the client parser.",
+  "_comment": "Real response of POST /data.lua (xhr=1&sid=...&lang=de&page=docInfo&xhrId=all) from a FRITZ!Box 6660 Cable. Sanitized: sid replaced. Note: measurement values are strings with dots, frequencies in MHz, DS 3.1 entries are frequency ranges, DS 3.0 carries negative mse while 3.1 carries positive mer.",
   "pid": "docInfo",
-  "sid": "88e33a10c8313b6f",
+  "hide": {
+    "wps": true,
+    "ipv6": true,
+    "liveTv": true,
+    "wGuest": true,
+    "rrd": true,
+    "mobile": true,
+    "wKey": true,
+    "pushAcc": true,
+    "wSet": true,
+    "ssoSet": true,
+    "shareUsb": true
+  },
+  "timeTillLogout": "1200",
+  "time": [],
   "data": {
-    "doc": {
-      "connectionStatus": "online",
-      "serialNumber": "123456789012",
-      "modelName": "FRITZ!Box 6591 Cable",
-      "fwVersion": "7.29"
-    },
     "channelDs": {
-      "docsis30": {
-        "1": {
-          "frequency": 306000000,
-          "powerLevel": 3.5,
-          "modulation": "256QAM",
-          "mse": 39.8,
-          "corrErrors": 12,
-          "nonCorrErrors": 0
-        },
-        "5": {
-          "frequency": 330000000,
-          "powerLevel": 4.1,
-          "modulation": "256QAM",
-          "mse": 40.2,
-          "corrErrors": 340,
-          "nonCorrErrors": 7
-        }
-      },
-      "docsis31": {
-        "33": {
-          "frequency": 858000000,
-          "powerLevel": 6.5,
-          "modulation": "4096QAM",
-          "mse": 43.1,
-          "corrErrors": 0,
-          "nonCorrErrors": 0
-        }
-      }
+      "docsis31": [
+        {"powerLevel": "17.1", "nonCorrErrors": 130, "modulation": "4096QAM", "plc": "264", "mer": "43", "fft": "4K", "channelID": 193, "frequency": "134.975 - 324.975"},
+        {"powerLevel": "14.2", "nonCorrErrors": 178, "modulation": "4096QAM", "plc": "822", "mer": "39", "fft": "4K", "channelID": 194, "frequency": "750.975 - 860.975"}
+      ],
+      "docsis30": [
+        {"powerLevel": "16.0", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 986, "latency": 0.32, "mse": "-39.0", "channelID": 8, "frequency": "618.000"},
+        {"powerLevel": "16.6", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 616, "latency": 0.32, "mse": "-39.0", "channelID": 3, "frequency": "570.000"},
+        {"powerLevel": "16.6", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 669, "latency": 0.32, "mse": "-38.6", "channelID": 4, "frequency": "578.000"},
+        {"powerLevel": "16.5", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 854, "latency": 0.32, "mse": "-40.4", "channelID": 5, "frequency": "586.000"},
+        {"powerLevel": "16.4", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 871, "latency": 0.32, "mse": "-40.4", "channelID": 6, "frequency": "594.000"},
+        {"powerLevel": "16.3", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 929, "latency": 0.32, "mse": "-39.0", "channelID": 7, "frequency": "602.000"},
+        {"powerLevel": "16.0", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 900, "latency": 0.32, "mse": "-38.6", "channelID": 9, "frequency": "626.000"},
+        {"powerLevel": "16.3", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 909, "latency": 0.32, "mse": "-40.4", "channelID": 10, "frequency": "634.000"},
+        {"powerLevel": "16.5", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 936, "latency": 0.32, "mse": "-39.0", "channelID": 11, "frequency": "642.000"},
+        {"powerLevel": "16.5", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 982, "latency": 0.32, "mse": "-39.0", "channelID": 12, "frequency": "650.000"},
+        {"powerLevel": "16.3", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 1162, "latency": 0.32, "mse": "-39.0", "channelID": 13, "frequency": "658.000"},
+        {"powerLevel": "16.6", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 1145, "latency": 0.32, "mse": "-39.0", "channelID": 14, "frequency": "666.000"},
+        {"powerLevel": "16.5", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 1074, "latency": 0.32, "mse": "-39.0", "channelID": 15, "frequency": "674.000"},
+        {"powerLevel": "16.7", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 1030, "latency": 0.32, "mse": "-40.9", "channelID": 16, "frequency": "682.000"},
+        {"powerLevel": "16.8", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 969, "latency": 0.32, "mse": "-39.0", "channelID": 17, "frequency": "690.000"},
+        {"powerLevel": "18.4", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 0, "latency": 0.32, "mse": "-40.4", "channelID": 1, "frequency": "114.000"},
+        {"powerLevel": "17.6", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 1, "latency": 0.32, "mse": "-40.9", "channelID": 2, "frequency": "130.000"},
+        {"powerLevel": "17.0", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 892, "latency": 0.32, "mse": "-39.0", "channelID": 18, "frequency": "698.000"},
+        {"powerLevel": "17.4", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 731, "latency": 0.32, "mse": "-39.0", "channelID": 19, "frequency": "706.000"},
+        {"powerLevel": "17.8", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 660, "latency": 0.32, "mse": "-40.4", "channelID": 20, "frequency": "714.000"},
+        {"powerLevel": "18.2", "nonCorrErrors": 1120, "modulation": "256QAM", "corrErrors": 1674, "latency": 0.32, "mse": "-40.4", "channelID": 21, "frequency": "722.000"},
+        {"powerLevel": "18.4", "nonCorrErrors": 1985, "modulation": "256QAM", "corrErrors": 6518, "latency": 0.32, "mse": "-40.4", "channelID": 22, "frequency": "730.000"},
+        {"powerLevel": "18.6", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 466, "latency": 0.32, "mse": "-40.4", "channelID": 23, "frequency": "738.000"},
+        {"powerLevel": "18.4", "nonCorrErrors": 0, "modulation": "256QAM", "corrErrors": 421, "latency": 0.32, "mse": "-40.4", "channelID": 24, "frequency": "746.000"}
+      ]
     },
+    "oem": "avm",
+    "readyState": "ready",
     "channelUs": {
-      "docsis30": {
-        "4": {
-          "frequency": 21000000,
-          "powerLevel": 110.5,
-          "modulation": "64QAM"
-        },
-        "6": {
-          "frequency": 39000000,
-          "powerLevel": 111.0,
-          "modulation": "64QAM"
-        }
-      },
-      "docsis31": {
-        "10": {
-          "frequency": 57000000,
-          "powerLevel": 112.5,
-          "modulation": "4096QAM"
-        }
-      }
+      "docsis31": [
+        {"powerLevel": "24.0", "modulation": "128QAM", "activesub": "640", "fft": "2K", "channelID": 41, "frequency": "29.775 - 64.775"}
+      ],
+      "docsis30": [
+        {"powerLevel": "28.8", "modulation": "64QAM", "multiplex": "ATDMA", "channelID": 1, "frequency": "30.800"},
+        {"powerLevel": "29.5", "modulation": "64QAM", "multiplex": "ATDMA", "channelID": 4, "frequency": "51.000"},
+        {"powerLevel": "29.0", "modulation": "64QAM", "multiplex": "ATDMA", "channelID": 3, "frequency": "44.600"},
+        {"powerLevel": "29.0", "modulation": "64QAM", "multiplex": "ATDMA", "channelID": 2, "frequency": "37.200"}
+      ]
     }
-  }
+  },
+  "sid": "88e33a10c8313b6f"
 }

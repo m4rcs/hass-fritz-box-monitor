@@ -2,10 +2,9 @@
 
 The client is exercised against a faked FRITZ!Box web UI: aioclient_mock
 replaces the shared aiohttp session and serves the canned responses from
-the fixtures directory. These tests drive the implementation of
-client.py (TDD); they are expected to fail until it is implemented.
+the fixtures directory (real captured payloads, sanitized). These tests
+pin the implementation of client.py.
 """
-
 
 from collections.abc import Callable
 from typing import Any
@@ -14,6 +13,10 @@ from aiohttp import ClientError
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import pytest
+from pytest_homeassistant_custom_component.test_util.aiohttp import (
+    AiohttpClientMockResponse,
+)
+from yarl import URL
 
 from custom_components.fritz_box_monitor.client import (
     CableModemStatus,
@@ -29,72 +32,135 @@ from .const import (
     FAKE_BLOCK_TIME,
     FAKE_HOST,
     FAKE_LOGIN_RESPONSE,
+    FAKE_MAC,
     FAKE_PASSWORD,
     FAKE_SID,
     FAKE_USERNAME,
 )
 
+
+def _ds_channel(
+    channel_id: int,
+    frequency: float,
+    power: str,
+    snr: float,
+    correctable: int,
+    uncorrectable: int,
+) -> DocsisChannel:
+    """Build an expected DOCSIS 3.0 downstream channel."""
+    return DocsisChannel(
+        channel_id=channel_id,
+        docsis_version="3.0",
+        frequency=frequency,
+        power=float(power),
+        modulation="256QAM",
+        snr=snr,
+        correctable_errors=correctable,
+        uncorrectable_errors=uncorrectable,
+    )
+
+
+def _ds31_channel(
+    channel_id: int,
+    frequency: float,
+    power: str,
+    snr: float,
+    uncorrectable: int,
+) -> DocsisChannel:
+    """Build an expected DOCSIS 3.1 downstream channel."""
+    return DocsisChannel(
+        channel_id=channel_id,
+        docsis_version="3.1",
+        frequency=frequency,
+        power=float(power),
+        modulation="4096QAM",
+        snr=snr,
+        correctable_errors=None,
+        uncorrectable_errors=uncorrectable,
+    )
+
+
+def _us_channel(
+    channel_id: int,
+    frequency: float,
+    power: str,
+    modulation: str = "64QAM",
+    docsis_version: str = "3.0",
+) -> DocsisChannel:
+    """Build an expected upstream channel."""
+    return DocsisChannel(
+        channel_id=channel_id,
+        docsis_version=docsis_version,
+        frequency=frequency,
+        power=float(power),
+        modulation=modulation,
+    )
+
+
 EXPECTED_STATUS = CableModemStatus(
-    serial_number="123456789012",
-    model="FRITZ!Box 6591 Cable",
-    firmware="7.29",
-    connection_status="online",
+    mac=FAKE_MAC,
+    model="FRITZ!Box 6660 Cable",
+    connection_status="ready",
+    os_version="8.25",
+    ds_rate=1126.4,
+    us_rate=52.5,
     downstream=(
-        DocsisChannel(
-            channel_id=1,
-            docsis_version="3.0",
-            frequency=306_000_000,
-            power=3.5,
-            modulation="256QAM",
-            snr=39.8,
-            correctable_errors=12,
-            uncorrectable_errors=0,
-        ),
-        DocsisChannel(
-            channel_id=5,
-            docsis_version="3.0",
-            frequency=330_000_000,
-            power=4.1,
-            modulation="256QAM",
-            snr=40.2,
-            correctable_errors=340,
-            uncorrectable_errors=7,
-        ),
-        DocsisChannel(
-            channel_id=33,
-            docsis_version="3.1",
-            frequency=858_000_000,
-            power=6.5,
-            modulation="4096QAM",
-            snr=43.1,
-            correctable_errors=0,
-            uncorrectable_errors=0,
-        ),
+        # DOCSIS 3.0, in reported order.
+        _ds_channel(8, 618.0, "16.0", 39.0, 986, 0),
+        _ds_channel(3, 570.0, "16.6", 39.0, 616, 0),
+        _ds_channel(4, 578.0, "16.6", 38.6, 669, 0),
+        _ds_channel(5, 586.0, "16.5", 40.4, 854, 0),
+        _ds_channel(6, 594.0, "16.4", 40.4, 871, 0),
+        _ds_channel(7, 602.0, "16.3", 39.0, 929, 0),
+        _ds_channel(9, 626.0, "16.0", 38.6, 900, 0),
+        _ds_channel(10, 634.0, "16.3", 40.4, 909, 0),
+        _ds_channel(11, 642.0, "16.5", 39.0, 936, 0),
+        _ds_channel(12, 650.0, "16.5", 39.0, 982, 0),
+        _ds_channel(13, 658.0, "16.3", 39.0, 1162, 0),
+        _ds_channel(14, 666.0, "16.6", 39.0, 1145, 0),
+        _ds_channel(15, 674.0, "16.5", 39.0, 1074, 0),
+        _ds_channel(16, 682.0, "16.7", 40.9, 1030, 0),
+        _ds_channel(17, 690.0, "16.8", 39.0, 969, 0),
+        _ds_channel(1, 114.0, "18.4", 40.4, 0, 0),
+        _ds_channel(2, 130.0, "17.6", 40.9, 1, 0),
+        _ds_channel(18, 698.0, "17.0", 39.0, 892, 0),
+        _ds_channel(19, 706.0, "17.4", 39.0, 731, 0),
+        _ds_channel(20, 714.0, "17.8", 40.4, 660, 0),
+        _ds_channel(21, 722.0, "18.2", 40.4, 1674, 1120),
+        _ds_channel(22, 730.0, "18.4", 40.4, 6518, 1985),
+        _ds_channel(23, 738.0, "18.6", 40.4, 466, 0),
+        _ds_channel(24, 746.0, "18.4", 40.4, 421, 0),
+        # DOCSIS 3.1: negative mse becomes a positive SNR, 3.1 reports
+        # MER directly, frequencies are band midpoints in MHz.
+        _ds31_channel(193, 229.975, "17.1", 43.0, 130),
+        _ds31_channel(194, 805.975, "14.2", 39.0, 178),
     ),
     upstream=(
-        DocsisChannel(
-            channel_id=4,
-            docsis_version="3.0",
-            frequency=21_000_000,
-            power=110.5,
-            modulation="64QAM",
-        ),
-        DocsisChannel(
-            channel_id=6,
-            docsis_version="3.0",
-            frequency=39_000_000,
-            power=111.0,
-            modulation="64QAM",
-        ),
-        DocsisChannel(
-            channel_id=10,
-            docsis_version="3.1",
-            frequency=57_000_000,
-            power=112.5,
-            modulation="4096QAM",
-        ),
+        _us_channel(1, 30.8, "28.8"),
+        _us_channel(4, 51.0, "29.5"),
+        _us_channel(3, 44.6, "29.0"),
+        _us_channel(2, 37.2, "29.0"),
+        _us_channel(41, 47.275, "24.0", "128QAM", "3.1"),
     ),
 )
+
+
+def _doc_page_dispatch(
+    load_fritz_fixture: Callable[[str], str],
+) -> Callable[[str, Any, Any], Any]:
+    """Return a side_effect serving both data.lua pages like the box."""
+
+    pages = {
+        "docOv": load_fritz_fixture("doc_ov.json"),
+        "docInfo": load_fritz_fixture("doc_info.json"),
+    }
+
+    async def _serve(method: str, url: URL, data: Any) -> Any:
+        """Serve the canned response matching the requested page."""
+        page = str(dict(data or {}).get("page"))
+        return AiohttpClientMockResponse(method, URL(url), text=pages[page])
+
+    return _serve
 
 
 def _client(hass: HomeAssistant) -> FritzBoxMonitorClient:
@@ -119,10 +185,10 @@ def _calls_to(
     ]
 
 
-async def test_get_status_parses_doc_info(
+async def test_get_status_parses_both_pages(
     hass: HomeAssistant, mock_fritz_box: None
 ) -> None:
-    """get_status logs in and parses the docInfo page into a status."""
+    """get_status combines docOv identity and docInfo channels."""
     status = await _client(hass).get_status()
 
     assert status == EXPECTED_STATUS
@@ -157,18 +223,69 @@ async def test_challenge_is_requested_with_version_2(
     assert str(challenge_gets[0][1]).endswith("login_sid.lua?version=2")
 
 
-async def test_data_page_requested_with_sid(
+async def test_doc_pages_requested_like_the_web_ui(
     hass: HomeAssistant, aioclient_mock: Any, mock_fritz_box: None
 ) -> None:
-    """The docInfo page is fetched by POST with the session id."""
+    """Both data.lua pages are fetched with the web UI request shape."""
     await _client(hass).get_status()
 
     data_posts = _calls_to(aioclient_mock, "data.lua")
-    assert len(data_posts) == 1
+    assert len(data_posts) == 2
 
-    data = dict(data_posts[0][2])
-    assert data["sid"] == FAKE_SID
-    assert data["page"] == "docInfo"
+    pages = [dict(call[2])["page"] for call in data_posts]
+    assert pages == ["docOv", "docInfo"]
+
+    for call in data_posts:
+        assert dict(call[2]) == {
+            "xhr": "1",
+            "sid": FAKE_SID,
+            "lang": "en",
+            "page": dict(call[2])["page"],
+            "xhrId": "all",
+        }
+
+
+async def test_os_version_requested_with_avm_sid_header(
+    hass: HomeAssistant, aioclient_mock: Any, mock_fritz_box: None
+) -> None:
+    """The FRITZ!OS version endpoint authenticates via an AVM-SID header."""
+    await _client(hass).get_status()
+
+    version_gets = _calls_to(aioclient_mock, "uimodlogic", "GET")
+    assert len(version_gets) == 1
+    assert str(version_gets[0][1]).endswith("/api/v0/generic/uimodlogic")
+    headers = version_gets[0][3]
+    assert headers is not None
+    assert headers["Authorization"] == f"AVM-SID {FAKE_SID}"
+
+
+async def test_missing_os_version_api_is_tolerated(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """A box without the version API still reports everything else."""
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_challenge.xml"),
+    )
+    aioclient_mock.post(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_success.xml"),
+    )
+    aioclient_mock.post(
+        f"{FAKE_BASE_URL}/data.lua",
+        side_effect=_doc_page_dispatch(load_fritz_fixture),
+    )
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/api/v0/generic/uimodlogic", status=404
+    )
+
+    status = await _client(hass).get_status()
+
+    assert status.os_version is None
+    assert status.model == "FRITZ!Box 6660 Cable"
+    assert status.downstream[0].channel_id == 8
 
 
 async def test_wrong_credentials_raises_auth_error(
@@ -190,9 +307,7 @@ async def test_wrong_credentials_raises_auth_error(
         await _client(hass).get_status()
 
 
-@pytest.mark.parametrize(
-    "exc", [TimeoutError(), ClientError()]
-)
+@pytest.mark.parametrize("exc", [TimeoutError(), ClientError()])
 async def test_unreachable_modem_raises_connection_error(
     hass: HomeAssistant, aioclient_mock: Any, exc: Exception
 ) -> None:
@@ -212,7 +327,7 @@ async def test_data_page_error_raises_connection_error(
     load_fritz_fixture: Callable[[str], str],
     status: int,
 ) -> None:
-    """A failing docInfo fetch after a successful login maps to an error."""
+    """A failing data page after a successful login maps to an error."""
     aioclient_mock.get(
         f"{FAKE_BASE_URL}/login_sid.lua?version=2",
         text=load_fritz_fixture("login_challenge.xml"),
@@ -275,7 +390,7 @@ async def test_expired_sid_triggers_relogin(
     aioclient_mock: Any,
     load_fritz_fixture: Callable[[str], str],
 ) -> None:
-    """When the docInfo fetch is rejected, the client re-logins once."""
+    """When the docOv fetch is rejected, the client re-logins once."""
     aioclient_mock.get(
         f"{FAKE_BASE_URL}/login_sid.lua?version=2",
         text=load_fritz_fixture("login_challenge.xml"),
@@ -284,8 +399,9 @@ async def test_expired_sid_triggers_relogin(
         f"{FAKE_BASE_URL}/login_sid.lua?version=2",
         text=load_fritz_fixture("login_success.xml"),
     )
-    # The SID is expired, so every docInfo fetch is rejected. The client
-    # must re-login (a second login POST) and retry once before giving up.
+    # The SID is expired, so every data page fetch is rejected. The
+    # client must re-login (a second login POST) and retry once before
+    # giving up.
     aioclient_mock.post(
         f"{FAKE_BASE_URL}/data.lua", text="forbidden", status=403
     )

@@ -23,8 +23,6 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: FritzBoxMonitorConfigEntry
 ) -> bool:
     """Set up FRITZ!Box Monitor from a config entry."""
-    # TODO: replace the stub client with the real implementation; see
-    # client.py for the open decisions.
     client = FritzBoxMonitorClient(
         entry.data[CONF_HOST],
         session=async_get_clientsession(hass),

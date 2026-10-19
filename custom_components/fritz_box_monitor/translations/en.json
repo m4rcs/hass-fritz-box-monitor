@@ -33,6 +33,42 @@
     "sensor": {
       "connection_status": {
         "name": "Connection status"
+      },
+      "ds_channel_count": {
+        "name": "Downstream channels"
+      },
+      "us_channel_count": {
+        "name": "Upstream channels"
+      },
+      "ds_power_min": {
+        "name": "Downstream power (min)"
+      },
+      "ds_power_max": {
+        "name": "Downstream power (max)"
+      },
+      "us_power_min": {
+        "name": "Upstream power (min)"
+      },
+      "us_power_max": {
+        "name": "Upstream power (max)"
+      },
+      "ds_snr_min": {
+        "name": "Downstream SNR (min)"
+      },
+      "ds_snr_max": {
+        "name": "Downstream SNR (max)"
+      },
+      "ds_correctable_errors": {
+        "name": "Downstream correctable errors"
+      },
+      "ds_uncorrectable_errors": {
+        "name": "Downstream uncorrectable errors"
+      },
+      "ds_rate": {
+        "name": "Downstream rate"
+      },
+      "us_rate": {
+        "name": "Upstream rate"
       }
     }
   }

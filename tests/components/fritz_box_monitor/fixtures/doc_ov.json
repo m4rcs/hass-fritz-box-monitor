@@ -1,0 +1,96 @@
+{
+  "_comment": "Real response of POST /data.lua (xhr=1&sid=...&lang=de&page=docOv&xhrId=all) from a FRITZ!Box 6660 Cable, FRITZ!OS with DOCSIS fw 7.3.5.3.521. Sanitized: sid replaced, CM MAC replaced with a placeholder.",
+  "pid": "docOv",
+  "hide": {
+    "wps": true,
+    "ipv6": true,
+    "liveTv": true,
+    "wGuest": true,
+    "rrd": true,
+    "mobile": true,
+    "wKey": true,
+    "pushAcc": true,
+    "wSet": true,
+    "ssoSet": true,
+    "shareUsb": true
+  },
+  "timeTillLogout": "1200",
+  "time": [],
+  "data": {
+    "connectionData": {
+      "infoMiddle": {
+        "details": [
+          {"value": "aktiv", "text": "Kabel-Internet:"},
+          {"value": "1 Tag, 3 Stunden, 19 Minuten", "text": "Verbindungsdauer:"},
+          {"value": "DOCSIS 3.0 und DOCSIS 3.1", "text": "Verbindungstyp:"}
+        ],
+        "chartData": {
+          "subtitle": "im Downstream",
+          "title": "Nutzung der Kabel-Verbindung",
+          "max": 140800000,
+          "values": [34308, 7903, 33698, 14586, 135330, 23318, 17266, 6384, 27028, 3179, 132966, 21231, 10916, 8000, 74928, 13633, 9327, 21089, 15823, 5989],
+          "currMax": 135330
+        },
+        "title": "Informationen zur Kabel-Verbindung",
+        "upDownInfos": {
+          "details": [
+            {"usValue": 5, "text": "Anzahl Kan\u00e4le:", "dsValue": 26}
+          ],
+          "sendingText": "in Senderichtung",
+          "receiveText": "in Empfangsrichtung"
+        }
+      },
+      "connectedText": "... Registrierung erfolgreich. Ihre Kabel-Internet-Verbindung ist nun aktiv. ...",
+      "modell": "FRITZ!Box 6660 Cable",
+      "fullLine": false,
+      "isDebug": false,
+      "externAPPicture": {"base": "cable"},
+      "line": [
+        {
+          "state": "ready",
+          "timePrefix": "Verbindungsdauer:",
+          "trainState": "aktiv",
+          "mode": "DOCSIS 3.0 und DOCSIS 3.1",
+          "trainStatePrefix": "Kabel-Internet:",
+          "time": "1 Tag, 3 Stunden, 19 Minuten"
+        }
+      ],
+      "usFreqs": {
+        "max": 85,
+        "values": {
+          "docsis3_1": [[29.775, 64.775]],
+          "docsis3_0": [30.8, 51.0004, 44.6002, 37.2001]
+        },
+        "min": 5
+      },
+      "connectionType": "cable",
+      "debugidx": 0,
+      "frequencyBand": {"docsis3_1": true, "docsis3_0": true},
+      "infoRight": {
+        "title": "Details zum Netzbetreiber",
+        "details": [{"value": "unbekannt", "text": "CMTS-Hersteller:"}]
+      },
+      "externAPHeader": "Kopfstelle (CMTS)",
+      "showCableImg": "cablegrid",
+      "frequencyScantext": "Verbindungsaufbau l\u00e4uft... Dieser Vorgang kann je nach Anschluss bis zu 5 Minuten dauern.",
+      "usRate": "52,5 Mbit/s",
+      "dsRate": "1126,4 Mbit/s",
+      "infoLeft": {
+        "title": "Details zur FRITZ!Box 6660 Cable",
+        "details": [
+          {"value": "7.3.5.3.521", "text": "DOCSIS-Software-Version:"},
+          {"value": "AA:BB:CC:DD:EE:FF", "text": "CM MAC-Adresse:"}
+        ]
+      },
+      "dsFreqs": {
+        "max": 1218,
+        "values": {
+          "docsis3_1": [[134.975, 324.975], [750.975, 860.975]],
+          "docsis3_0": [618, 570, 578, 586, 594, 602, 626, 634, 642, 650, 658, 666, 674, 682, 690, 114, 130, 698, 706, 714, 722, 730, 738, 746]
+        },
+        "min": 108
+      }
+    }
+  },
+  "sid": "88e33a10c8313b6f"
+}

@@ -66,9 +66,9 @@ class FritzBoxMonitorConfigFlow(ConfigFlow, domain=DOMAIN):
                 _LOGGER.exception("Unexpected exception")
                 errors["base"] = "unknown"
             else:
-                # The serial number is the stable hardware identity; never
-                # use the host: it can change.
-                await self.async_set_unique_id(status.serial_number)
+                # The CM MAC address is the stable hardware identity; it
+                # is the only hardware identifier the web UI exposes.
+                await self.async_set_unique_id(status.mac)
                 self._abort_if_unique_id_configured()
 
                 return self.async_create_entry(

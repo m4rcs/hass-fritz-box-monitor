@@ -19,8 +19,8 @@ from custom_components.fritz_box_monitor.const import DOMAIN
 from .const import (
     FAKE_BASE_URL,
     FAKE_HOST,
+    FAKE_MAC,
     FAKE_PASSWORD,
-    FAKE_SERIAL,
     FAKE_USERNAME,
 )
 
@@ -74,18 +74,18 @@ async def test_successful_setup_creates_entry(
         await hass.async_block_till_done()
 
     assert result["type"] == FlowResultType.CREATE_ENTRY
-    assert result["title"] == "FRITZ!Box 6591 Cable"
+    assert result["title"] == "FRITZ!Box 6660 Cable"
     assert result["data"] == _user_input()
 
     entry = hass.config_entries.async_entries()[0]
-    assert entry.unique_id == FAKE_SERIAL
+    assert entry.unique_id == FAKE_MAC
 
 
 async def test_duplicate_serial_aborts(
     hass: HomeAssistant, mock_fritz_box: None
 ) -> None:
     """A modem that is already set up aborts the flow."""
-    entry = MockConfigEntry(domain=DOMAIN, unique_id=FAKE_SERIAL)
+    entry = MockConfigEntry(domain=DOMAIN, unique_id=FAKE_MAC)
     entry.add_to_hass(hass)
 
     result = await _submit(hass, _user_input())

@@ -5,16 +5,16 @@ these values, so expected request bodies are known constants.
 """
 
 FAKE_HOST = "fritz.box"
-FAKE_BASE_URL = f"http://{FAKE_HOST}"
+FAKE_BASE_URL = f"https://{FAKE_HOST}"
 FAKE_USERNAME = "test-user"
 FAKE_PASSWORD = "test-password"
 
+# CM MAC address as served by doc_ov.json (sanitized); the stable
+# hardware identity the web UI exposes (no serial number).
+FAKE_MAC = "AA:BB:CC:DD:EE:FF"
+
 # SID of a logged-in session, as served by login_success.xml.
 FAKE_SID = "88e33a10c8313b6f"
-
-# Serial number reported by the fake FRITZ!Box in doc_info.json; the
-# config flow uses it as the config entry unique id.
-FAKE_SERIAL = "123456789012"
 
 # Seconds the fake FRITZ!Box blocks login attempts in the blocked
 # fixtures (login_challenge_blocked.xml, login_blocked.xml).

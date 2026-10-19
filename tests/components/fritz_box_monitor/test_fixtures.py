@@ -14,6 +14,7 @@ from .const import (
     FAKE_BLOCK_TIME,
     FAKE_CHALLENGE,
     FAKE_LOGIN_RESPONSE,
+    FAKE_MAC,
     FAKE_PASSWORD,
     FAKE_SID,
 )
@@ -73,12 +74,32 @@ def test_pbkdf2_response_matches_const() -> None:
     assert f"{salt2}${hash2.hex()}" == FAKE_LOGIN_RESPONSE
 
 
-def test_doc_info_fixture_contains_channels() -> None:
-    """The fake docInfo page carries the channels the client parses."""
+def test_doc_info_fixture_contains_real_channels() -> None:
+    """The captured docInfo page carries the channel lists as arrays."""
     doc = json.loads(_fixture("doc_info.json"))["data"]
-    assert set(doc["channelDs"]) == {"docsis30", "docsis31"}
-    assert set(doc["channelUs"]) == {"docsis30", "docsis31"}
-    assert len(doc["channelDs"]["docsis30"]) == 2
-    assert len(doc["channelDs"]["docsis31"]) == 1
-    assert len(doc["channelUs"]["docsis30"]) == 2
+
+    assert len(doc["channelDs"]["docsis30"]) == 24
+    assert len(doc["channelDs"]["docsis31"]) == 2
+    assert len(doc["channelUs"]["docsis30"]) == 4
     assert len(doc["channelUs"]["docsis31"]) == 1
+
+    entry = doc["channelDs"]["docsis30"][0]
+    assert isinstance(entry["powerLevel"], str)
+    assert isinstance(entry["corrErrors"], int)
+    assert "mse" in entry
+
+
+def test_doc_ov_fixture_carries_identity_and_rates() -> None:
+    """The captured docOv page carries identity, state and rates."""
+    data = json.loads(_fixture("doc_ov.json"))["data"]["connectionData"]
+
+    assert data["modell"] == "FRITZ!Box 6660 Cable"
+    assert data["line"][0]["state"] == "ready"
+    assert data["infoLeft"]["details"][1]["value"] == FAKE_MAC
+    assert data["dsRate"] == "1126,4 Mbit/s"
+    assert data["usRate"] == "52,5 Mbit/s"
+
+
+def test_uimodlogic_fixture_carries_nspver() -> None:
+    """The captured version endpoint carries the UI namespace version."""
+    assert json.loads(_fixture("uimodlogic.json"))["nspver"] == "252.08.25"

@@ -1,0 +1,6 @@
+{
+  "_comment": "Real response of GET /api/v0/generic/uimodlogic (Authorization: AVM-SID ...) from a FRITZ!Box 6660 Cable on FRITZ!OS 8.25. nspver is the UI namespace version; the FRITZ!OS version is the part after the first dot.",
+  "nspver": "252.08.25",
+  "uptime_minutes": "36",
+  "uptime_hours": "28"
+}
