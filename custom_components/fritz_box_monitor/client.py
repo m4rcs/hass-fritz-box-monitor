@@ -26,6 +26,7 @@ from dataclasses import dataclass
 import hashlib
 from itertools import chain
 import json
+import re
 from typing import Any, cast
 import xml.etree.ElementTree as ET
 
@@ -33,10 +34,14 @@ from aiohttp import ClientError, ClientSession
 
 _ZERO_SID = "0" * 16
 
-_DOCSIS_VERSIONS = (("docsis30", "3.0"), ("docsis31", "3.1"))
-
 # nspver is "<namespace>.<major>.<minor>".
 _NSPVER_PARTS = 3
+
+_NUMBER_PATTERN = re.compile(r"\d+(?:[.,]\d+)*")
+_MAC_PATTERN = re.compile(r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$")
+
+# A DOCSIS 3.1 frequency entry describes a band with start and end.
+_RANGE_TOKENS = 2
 
 
 @dataclass(frozen=True)
@@ -65,7 +70,7 @@ class CableModemStatus:
 
     mac: str
     model: str
-    connection_status: str
+    connection_status: str | None
     os_version: str | None  # FRITZ!OS version; None when unavailable
     ds_rate: float  # Mbit/s
     us_rate: float  # Mbit/s
@@ -138,17 +143,39 @@ def _calculate_pbkdf2_response(challenge: str, password: str) -> str:
     return f"{salt2}${hash2.hex()}"
 
 
+def _parse_number(raw: str) -> float:
+    """Parse a number token that may use ',' or '.' as separators.
+
+    When both appear, the last one is the decimal separator (covers
+    "1126,4", "1126.4" and the thousands form "1,126.4").
+    """
+    match = _NUMBER_PATTERN.search(raw)
+    if match is None:
+        raise ValueError(f"No number found in {raw!r}")
+    text = match.group(0)
+    if "," in text and "." in text:
+        if text.rfind(",") > text.rfind("."):
+            text = text.replace(".", "").replace(",", ".")
+        else:
+            text = text.replace(",", "")
+    return float(text.replace(",", "."))
+
+
 def _parse_rate(raw: str) -> float:
-    """Parse a rate like "1126,4 Mbit/s" or "1126.4 Mbit/s" into Mbit/s."""
-    return float(raw.split(" ", 1)[0].replace(",", "."))
+    """Parse a rate like "1126,4 Mbit/s" into Mbit/s."""
+    return _parse_number(raw)
 
 
 def _parse_frequency(raw: str) -> float:
     """Parse a frequency in MHz; ranges become the band midpoint."""
-    if " - " in raw:
-        start, end = raw.split(" - ", 1)
-        return round((float(start) + float(end)) / 2, 3)
-    return float(raw)
+    tokens = [match.group(0) for match in _NUMBER_PATTERN.finditer(raw)]
+    if len(tokens) >= _RANGE_TOKENS:
+        return round(
+            (_parse_number(tokens[0]) + _parse_number(tokens[1])) / 2, 3
+        )
+    if tokens:
+        return _parse_number(tokens[0])
+    raise ValueError(f"No frequency found in {raw!r}")
 
 
 def _parse_snr(entry: dict[str, Any], downstream: bool) -> float | None:
@@ -187,14 +214,25 @@ def _parse_channels(
     )
 
 
+def _docsis_version(key: str) -> str:
+    """Turn a container key like "docsis31" into a label like "3.1"."""
+    return f"{key[-2]}.{key[-1]}"
+
+
 def _parse_direction(
     container: dict[str, Any], downstream: bool
 ) -> tuple[DocsisChannel, ...]:
-    """DOCSIS 3.0 channels first, then 3.1, in reported order."""
+    """Channels of every DOCSIS version, lowest version first.
+
+    Unknown version keys (a future DOCSIS 4.0) are parsed with the same
+    schema instead of being dropped.
+    """
     return tuple(
         chain.from_iterable(
-            _parse_channels(container.get(version_key, []), version, downstream)
-            for version_key, version in _DOCSIS_VERSIONS
+            _parse_channels(
+                container.get(key, []), _docsis_version(key), downstream
+            )
+            for key in sorted(container, key=_docsis_version)
         )
     )
 
@@ -214,6 +252,23 @@ def _parse_nspver(raw: str) -> str:
     return raw
 
 
+def _extract_mac(doc_ov: dict[str, Any]) -> str:
+    """Extract the CM MAC from the docOv page by value shape.
+
+    The web UI labels and orders the info entries per firmware, so the
+    MAC is identified as the only value with an address pattern instead
+    of by position.
+    """
+    details = doc_ov["data"]["connectionData"]["infoLeft"]["details"]
+    for entry in details:
+        value = str(entry.get("value", ""))
+        if _MAC_PATTERN.match(value):
+            return value
+    raise FritzBoxMonitorError(
+        "No cable modem MAC address found in the docOv page"
+    )
+
+
 def _parse_status(
     doc_ov: dict[str, Any],
     doc_info: dict[str, Any],
@@ -224,15 +279,15 @@ def _parse_status(
     data_ov = doc_ov["data"]["connectionData"]
     data_info = doc_info["data"]
 
-    # The MAC is the second infoLeft entry (locale-independent position;
-    # the first holds the DOCSIS software version).
-    mac = str(data_ov["infoLeft"]["details"][1]["value"])
-    line = data_ov["line"][0]
+    line_entries = data_ov.get("line", [])
+    connection_status = (
+        str(line_entries[0]["state"]) if line_entries else None
+    )
 
     return CableModemStatus(
-        mac=mac,
+        mac=_extract_mac(doc_ov),
         model=str(data_ov["modell"]),
-        connection_status=str(line["state"]),
+        connection_status=connection_status,
         os_version=os_version,
         ds_rate=_parse_rate(str(data_ov["dsRate"])),
         us_rate=_parse_rate(str(data_ov["usRate"])),
@@ -272,7 +327,12 @@ class FritzBoxMonitorClient:
         os_version = None
         if self._sid is not None:
             os_version = await self._async_fetch_os_version(self._sid)
-        return _parse_status(doc_ov, doc_info, os_version)
+        try:
+            return _parse_status(doc_ov, doc_info, os_version)
+        except (KeyError, IndexError, ValueError) as err:
+            raise FritzBoxMonitorError(
+                f"Unexpected docOv/docInfo structure: {err}"
+            ) from err
 
     async def _async_login(self) -> str:
         """Login and cache the session id."""

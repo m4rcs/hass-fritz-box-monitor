@@ -7,6 +7,8 @@ pin the implementation of client.py.
 """
 
 from collections.abc import Callable
+from dataclasses import replace
+import json
 from typing import Any
 
 from aiohttp import ClientError
@@ -24,7 +26,10 @@ from custom_components.fritz_box_monitor.client import (
     FritzBoxMonitorAuthError,
     FritzBoxMonitorClient,
     FritzBoxMonitorConnectionError,
+    FritzBoxMonitorError,
     FritzBoxMonitorLoginBlockedError,
+    _parse_frequency,
+    _parse_rate,
 )
 
 from .const import (
@@ -161,6 +166,45 @@ def _doc_page_dispatch(
         return AiohttpClientMockResponse(method, URL(url), text=pages[page])
 
     return _serve
+
+
+def _register_flow(
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+    *,
+    doc_ov: dict[str, Any] | None = None,
+    doc_info: dict[str, Any] | None = None,
+) -> None:
+    """Register login routes and data page routes (optionally modified)."""
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_challenge.xml"),
+    )
+    aioclient_mock.post(
+        f"{FAKE_BASE_URL}/login_sid.lua?version=2",
+        text=load_fritz_fixture("login_success.xml"),
+    )
+    pages = {
+        "docOv": (
+            json.dumps(doc_ov) if doc_ov else load_fritz_fixture("doc_ov.json")
+        ),
+        "docInfo": (
+            json.dumps(doc_info)
+            if doc_info
+            else load_fritz_fixture("doc_info.json")
+        ),
+    }
+
+    async def _serve(method: str, url: URL, data: Any) -> Any:
+        """Serve the canned response matching the requested page."""
+        page = str(dict(data or {}).get("page"))
+        return AiohttpClientMockResponse(method, URL(url), text=pages[page])
+
+    aioclient_mock.post(f"{FAKE_BASE_URL}/data.lua", side_effect=_serve)
+    aioclient_mock.get(
+        f"{FAKE_BASE_URL}/api/v0/generic/uimodlogic",
+        text=load_fritz_fixture("uimodlogic.json"),
+    )
 
 
 def _client(hass: HomeAssistant) -> FritzBoxMonitorClient:
@@ -383,6 +427,98 @@ async def test_blocked_login_raises_login_blocked(
 
     assert exc_info.value.block_time == FAKE_BLOCK_TIME
     assert isinstance(exc_info.value, FritzBoxMonitorAuthError)
+
+
+def test_parse_rate_accepts_separator_variants() -> None:
+    """Rates parse with German or English decimal/thousand separators."""
+    assert _parse_rate("1126,4 Mbit/s") == 1126.4
+    assert _parse_rate("1126.4 Mbit/s") == 1126.4
+    assert _parse_rate("1,126.4 Mbit/s") == 1126.4
+    assert _parse_rate("52,5 Mbit/s") == 52.5
+
+
+def test_parse_frequency_accepts_range_variants() -> None:
+    """Single frequencies parse directly, ranges become the midpoint."""
+    assert _parse_frequency("618.000") == 618.0
+    assert _parse_frequency("134.975 - 324.975") == 229.975
+    assert _parse_frequency("134.975-324.975") == 229.975
+
+
+async def test_mac_is_found_by_pattern_not_position(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """The MAC is matched by value shape, whatever row it sits in."""
+    doc_ov = json.loads(load_fritz_fixture("doc_ov.json"))
+    details = doc_ov["data"]["connectionData"]["infoLeft"]["details"]
+    details.reverse()
+
+    _register_flow(aioclient_mock, load_fritz_fixture, doc_ov=doc_ov)
+
+    status = await _client(hass).get_status()
+
+    assert status == EXPECTED_STATUS
+
+
+async def test_missing_mac_raises_client_error(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """A docOv page without a MAC-shaped value fails with a client error."""
+    doc_ov = json.loads(load_fritz_fixture("doc_ov.json"))
+    doc_ov["data"]["connectionData"]["infoLeft"]["details"] = []
+
+    _register_flow(aioclient_mock, load_fritz_fixture, doc_ov=doc_ov)
+
+    with pytest.raises(FritzBoxMonitorError):
+        await _client(hass).get_status()
+
+
+async def test_connecting_modem_without_line_yields_unknown_status(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """An empty line list (modem still connecting) reports no status."""
+    doc_ov = json.loads(load_fritz_fixture("doc_ov.json"))
+    doc_ov["data"]["connectionData"]["line"] = []
+
+    _register_flow(aioclient_mock, load_fritz_fixture, doc_ov=doc_ov)
+
+    status = await _client(hass).get_status()
+
+    assert status.connection_status is None
+    assert status == replace(EXPECTED_STATUS, connection_status=None)
+
+
+async def test_future_docsis_version_is_included(
+    hass: HomeAssistant,
+    aioclient_mock: Any,
+    load_fritz_fixture: Callable[[str], str],
+) -> None:
+    """Channel lists of unknown DOCSIS versions are parsed, not dropped."""
+    doc_info = json.loads(load_fritz_fixture("doc_info.json"))
+    doc_info["data"]["channelDs"]["docsis40"] = [
+        {
+            "powerLevel": "12.0",
+            "nonCorrErrors": 5,
+            "modulation": "4096QAM",
+            "mer": "44",
+            "channelID": 300,
+            "frequency": "900.000 - 1000.000",
+        }
+    ]
+
+    _register_flow(aioclient_mock, load_fritz_fixture, doc_info=doc_info)
+
+    status = await _client(hass).get_status()
+
+    expected = _ds31_channel(300, 950.0, "12.0", 44.0, 5)
+    expected = replace(expected, docsis_version="4.0")
+    assert status.downstream[-1] == expected
+    assert len(status.downstream) == len(EXPECTED_STATUS.downstream) + 1
 
 
 async def test_expired_sid_triggers_relogin(
