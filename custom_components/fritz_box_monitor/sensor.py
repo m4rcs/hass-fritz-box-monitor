@@ -277,14 +277,21 @@ class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
 
     @property
     def extra_state_attributes(self) -> dict[str, StateType]:
-        """Expose the remaining channel data as attributes."""
+        """Expose the remaining channel data as attributes.
+
+        Besides the mapped fields, every extra field the firmware
+        reports (latency, plc, fft, multiplex, activesub, ...) and the
+        raw frequency string are included verbatim.
+        """
         channel = self._current_channel()
         if channel is None:
             return {}
         attributes: dict[str, StateType] = {
+            "channel_id": channel.channel_id,
             "docsis_version": channel.docsis_version,
             "frequency_mhz": channel.frequency,
             "modulation": channel.modulation,
+            **channel.extra,
         }
         if channel.snr is not None:
             attributes["snr_db"] = channel.snr

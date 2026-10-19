@@ -80,10 +80,13 @@
 # name: test_sensor_snapshot.13
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 8,
       'correctable_errors': 986,
       'docsis_version': '3.0',
+      'frequency': '618.000',
       'frequency_mhz': 618.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 8',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -101,10 +104,13 @@
 # name: test_sensor_snapshot.14
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 3,
       'correctable_errors': 616,
       'docsis_version': '3.0',
+      'frequency': '570.000',
       'frequency_mhz': 570.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 3',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -122,10 +128,13 @@
 # name: test_sensor_snapshot.15
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 4,
       'correctable_errors': 669,
       'docsis_version': '3.0',
+      'frequency': '578.000',
       'frequency_mhz': 578.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 4',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 38.6,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -143,10 +152,13 @@
 # name: test_sensor_snapshot.16
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 5,
       'correctable_errors': 854,
       'docsis_version': '3.0',
+      'frequency': '586.000',
       'frequency_mhz': 586.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 5',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -164,10 +176,13 @@
 # name: test_sensor_snapshot.17
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 6,
       'correctable_errors': 871,
       'docsis_version': '3.0',
+      'frequency': '594.000',
       'frequency_mhz': 594.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 6',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -185,10 +200,13 @@
 # name: test_sensor_snapshot.18
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 7,
       'correctable_errors': 929,
       'docsis_version': '3.0',
+      'frequency': '602.000',
       'frequency_mhz': 602.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 7',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -206,10 +224,13 @@
 # name: test_sensor_snapshot.19
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 9,
       'correctable_errors': 900,
       'docsis_version': '3.0',
+      'frequency': '626.000',
       'frequency_mhz': 626.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 9',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 38.6,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -242,10 +263,13 @@
 # name: test_sensor_snapshot.20
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 10,
       'correctable_errors': 909,
       'docsis_version': '3.0',
+      'frequency': '634.000',
       'frequency_mhz': 634.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 10',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -263,10 +287,13 @@
 # name: test_sensor_snapshot.21
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 11,
       'correctable_errors': 936,
       'docsis_version': '3.0',
+      'frequency': '642.000',
       'frequency_mhz': 642.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 11',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -284,10 +311,13 @@
 # name: test_sensor_snapshot.22
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 12,
       'correctable_errors': 982,
       'docsis_version': '3.0',
+      'frequency': '650.000',
       'frequency_mhz': 650.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 12',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -305,10 +335,13 @@
 # name: test_sensor_snapshot.23
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 13,
       'correctable_errors': 1162,
       'docsis_version': '3.0',
+      'frequency': '658.000',
       'frequency_mhz': 658.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 13',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -326,10 +359,13 @@
 # name: test_sensor_snapshot.24
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 14,
       'correctable_errors': 1145,
       'docsis_version': '3.0',
+      'frequency': '666.000',
       'frequency_mhz': 666.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 14',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -347,10 +383,13 @@
 # name: test_sensor_snapshot.25
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 15,
       'correctable_errors': 1074,
       'docsis_version': '3.0',
+      'frequency': '674.000',
       'frequency_mhz': 674.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 15',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -368,10 +407,13 @@
 # name: test_sensor_snapshot.26
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 16,
       'correctable_errors': 1030,
       'docsis_version': '3.0',
+      'frequency': '682.000',
       'frequency_mhz': 682.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 16',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.9,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -389,10 +431,13 @@
 # name: test_sensor_snapshot.27
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 17,
       'correctable_errors': 969,
       'docsis_version': '3.0',
+      'frequency': '690.000',
       'frequency_mhz': 690.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 17',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -410,10 +455,13 @@
 # name: test_sensor_snapshot.28
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 1,
       'correctable_errors': 0,
       'docsis_version': '3.0',
+      'frequency': '114.000',
       'frequency_mhz': 114.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 1',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -431,10 +479,13 @@
 # name: test_sensor_snapshot.29
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 2,
       'correctable_errors': 1,
       'docsis_version': '3.0',
+      'frequency': '130.000',
       'frequency_mhz': 130.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 2',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.9,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -468,10 +519,13 @@
 # name: test_sensor_snapshot.30
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 18,
       'correctable_errors': 892,
       'docsis_version': '3.0',
+      'frequency': '698.000',
       'frequency_mhz': 698.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 18',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -489,10 +543,13 @@
 # name: test_sensor_snapshot.31
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 19,
       'correctable_errors': 731,
       'docsis_version': '3.0',
+      'frequency': '706.000',
       'frequency_mhz': 706.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 19',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -510,10 +567,13 @@
 # name: test_sensor_snapshot.32
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 20,
       'correctable_errors': 660,
       'docsis_version': '3.0',
+      'frequency': '714.000',
       'frequency_mhz': 714.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 20',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -531,10 +591,13 @@
 # name: test_sensor_snapshot.33
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 21,
       'correctable_errors': 1674,
       'docsis_version': '3.0',
+      'frequency': '722.000',
       'frequency_mhz': 722.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 21',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -552,10 +615,13 @@
 # name: test_sensor_snapshot.34
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 22,
       'correctable_errors': 6518,
       'docsis_version': '3.0',
+      'frequency': '730.000',
       'frequency_mhz': 730.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 22',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -573,10 +639,13 @@
 # name: test_sensor_snapshot.35
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 23,
       'correctable_errors': 466,
       'docsis_version': '3.0',
+      'frequency': '738.000',
       'frequency_mhz': 738.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 23',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -594,10 +663,13 @@
 # name: test_sensor_snapshot.36
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 24,
       'correctable_errors': 421,
       'docsis_version': '3.0',
+      'frequency': '746.000',
       'frequency_mhz': 746.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 24',
+      'latency': 0.32,
       'modulation': '256QAM',
       'snr_db': 40.4,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
@@ -615,10 +687,14 @@
 # name: test_sensor_snapshot.37
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 193,
       'docsis_version': '3.1',
+      'fft': '4K',
+      'frequency': '134.975 - 324.975',
       'frequency_mhz': 229.975,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 193',
       'modulation': '4096QAM',
+      'plc': '264',
       'snr_db': 43.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       'uncorrectable_errors': 130,
@@ -635,10 +711,14 @@
 # name: test_sensor_snapshot.38
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 194,
       'docsis_version': '3.1',
+      'fft': '4K',
+      'frequency': '750.975 - 860.975',
       'frequency_mhz': 805.975,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Downstream channel 194',
       'modulation': '4096QAM',
+      'plc': '822',
       'snr_db': 39.0,
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       'uncorrectable_errors': 178,
@@ -655,10 +735,13 @@
 # name: test_sensor_snapshot.39
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 1,
       'docsis_version': '3.0',
+      'frequency': '30.800',
       'frequency_mhz': 30.8,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 1',
       'modulation': '64QAM',
+      'multiplex': 'ATDMA',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
     }),
@@ -689,10 +772,13 @@
 # name: test_sensor_snapshot.40
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 4,
       'docsis_version': '3.0',
+      'frequency': '51.000',
       'frequency_mhz': 51.0,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 4',
       'modulation': '64QAM',
+      'multiplex': 'ATDMA',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
     }),
@@ -707,10 +793,13 @@
 # name: test_sensor_snapshot.41
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 3,
       'docsis_version': '3.0',
+      'frequency': '44.600',
       'frequency_mhz': 44.6,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 3',
       'modulation': '64QAM',
+      'multiplex': 'ATDMA',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
     }),
@@ -725,10 +814,13 @@
 # name: test_sensor_snapshot.42
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'channel_id': 2,
       'docsis_version': '3.0',
+      'frequency': '37.200',
       'frequency_mhz': 37.2,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 2',
       'modulation': '64QAM',
+      'multiplex': 'ATDMA',
       <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
       <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'dBuV',
     }),
@@ -743,7 +835,11 @@
 # name: test_sensor_snapshot.43
   StateSnapshot({
     'attributes': ReadOnlyDict({
+      'activesub': '640',
+      'channel_id': 41,
       'docsis_version': '3.1',
+      'fft': '2K',
+      'frequency': '29.775 - 64.775',
       'frequency_mhz': 47.275,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'FRITZ!Box Monitor Upstream channel 41',
       'modulation': '128QAM',

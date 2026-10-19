@@ -22,7 +22,7 @@ The cable modem MAC address (from docOv) is the only stable hardware
 identifier the web UI exposes; it keys the config entry and device.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import hashlib
 from itertools import chain
 import json
@@ -39,6 +39,21 @@ _NSPVER_PARTS = 3
 
 _NUMBER_PATTERN = re.compile(r"\d+(?:[.,]\d+)*")
 _MAC_PATTERN = re.compile(r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$")
+
+# Channel keys mapped onto dedicated DocsisChannel fields; everything
+# else a firmware reports ends up verbatim in DocsisChannel.extra.
+_MAPPED_CHANNEL_KEYS = frozenset(
+    {
+        "channelID",
+        "powerLevel",
+        "modulation",
+        "corrErrors",
+        "nonCorrErrors",
+        "mse",
+        "mer",
+        "frequency",
+    }
+)
 
 # A DOCSIS 3.1 frequency entry describes a band with start and end.
 _RANGE_TOKENS = 2
@@ -62,6 +77,9 @@ class DocsisChannel:
     snr: float | None = None  # dB
     correctable_errors: int | None = None
     uncorrectable_errors: int | None = None
+    # Every remaining field the firmware reports (latency, plc, fft,
+    # multiplex, activesub, ...), verbatim and future-proof.
+    extra: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -198,20 +216,34 @@ def _parse_channels(
     docsis_version: str,
     downstream: bool,
 ) -> tuple[DocsisChannel, ...]:
-    """Parse the channel list of one DOCSIS version and direction."""
-    return tuple(
-        DocsisChannel(
-            channel_id=int(entry["channelID"]),
-            docsis_version=docsis_version,
-            frequency=_parse_frequency(str(entry["frequency"])),
-            power=float(entry["powerLevel"]),
-            modulation=str(entry["modulation"]),
-            snr=_parse_snr(entry, downstream),
-            correctable_errors=entry.get("corrErrors"),
-            uncorrectable_errors=entry.get("nonCorrErrors"),
+    """Parse the channel list of one DOCSIS version and direction.
+
+    Fields with a dedicated DocsisChannel slot are mapped; everything
+    else the firmware reports is kept verbatim in ``extra`` (including
+    the raw frequency string, whose range form the midpoint loses).
+    """
+    channels: list[DocsisChannel] = []
+    for entry in raw_channels:
+        extra: dict[str, Any] = {
+            key: value
+            for key, value in entry.items()
+            if key not in _MAPPED_CHANNEL_KEYS
+        }
+        extra["frequency"] = str(entry["frequency"])
+        channels.append(
+            DocsisChannel(
+                channel_id=int(entry["channelID"]),
+                docsis_version=docsis_version,
+                frequency=_parse_frequency(str(entry["frequency"])),
+                power=float(entry["powerLevel"]),
+                modulation=str(entry["modulation"]),
+                snr=_parse_snr(entry, downstream),
+                correctable_errors=entry.get("corrErrors"),
+                uncorrectable_errors=entry.get("nonCorrErrors"),
+                extra=extra,
+            )
         )
-        for entry in raw_channels
-    )
+    return tuple(channels)
 
 
 def _docsis_version(key: str) -> str:

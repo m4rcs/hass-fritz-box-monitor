@@ -99,12 +99,40 @@ async def test_channel_sensor_carries_attributes(
     state = hass.states.get(channel_entry.entity_id)
     assert state is not None
     assert state.state == "16.0"
+    assert state.attributes["channel_id"] == 8
     assert state.attributes["docsis_version"] == "3.0"
     assert state.attributes["frequency_mhz"] == 618.0
+    assert state.attributes["frequency"] == "618.000"
     assert state.attributes["modulation"] == "256QAM"
     assert state.attributes["snr_db"] == 39.0
     assert state.attributes["correctable_errors"] == 986
     assert state.attributes["uncorrectable_errors"] == 0
+    assert state.attributes["latency"] == 0.32
+
+
+async def test_docsis31_channel_sensor_carries_extra_fields(
+    hass: HomeAssistant, loaded_entry: MockConfigEntry
+) -> None:
+    """A 3.1 block exposes its OFDM-specific fields and the band range."""
+    registry = er.async_get(hass)
+    entries = er.async_entries_for_config_entry(
+        registry, loaded_entry.entry_id
+    )
+    channel_entry = next(
+        entry
+        for entry in entries
+        if entry.unique_id == f"{FAKE_MAC}_ds_channel_193"
+    )
+
+    state = hass.states.get(channel_entry.entity_id)
+    assert state is not None
+    assert state.state == "17.1"
+    assert state.attributes["frequency_mhz"] == 229.975
+    assert state.attributes["frequency"] == "134.975 - 324.975"
+    assert state.attributes["snr_db"] == 43.0
+    assert state.attributes["plc"] == "264"
+    assert state.attributes["fft"] == "4K"
+    assert "correctable_errors" not in state.attributes
 
 
 async def test_device_registry(

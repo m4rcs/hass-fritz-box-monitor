@@ -62,6 +62,7 @@ def _ds_channel(
         snr=snr,
         correctable_errors=correctable,
         uncorrectable_errors=uncorrectable,
+        extra={"latency": 0.32, "frequency": f"{frequency:.3f}"},
     )
 
 
@@ -71,6 +72,7 @@ def _ds31_channel(
     power: str,
     snr: float,
     uncorrectable: int,
+    extra: dict[str, Any],
 ) -> DocsisChannel:
     """Build an expected DOCSIS 3.1 downstream channel."""
     return DocsisChannel(
@@ -82,6 +84,7 @@ def _ds31_channel(
         snr=snr,
         correctable_errors=None,
         uncorrectable_errors=uncorrectable,
+        extra={"frequency": f"{frequency:.3f}", **extra},
     )
 
 
@@ -91,6 +94,7 @@ def _us_channel(
     power: str,
     modulation: str = "64QAM",
     docsis_version: str = "3.0",
+    extra: dict[str, Any] | None = None,
 ) -> DocsisChannel:
     """Build an expected upstream channel."""
     return DocsisChannel(
@@ -99,6 +103,7 @@ def _us_channel(
         frequency=frequency,
         power=float(power),
         modulation=modulation,
+        extra={"frequency": f"{frequency:.3f}", **(extra or {})},
     )
 
 
@@ -137,15 +142,40 @@ EXPECTED_STATUS = CableModemStatus(
         _ds_channel(24, 746.0, "18.4", 40.4, 421, 0),
         # DOCSIS 3.1: negative mse becomes a positive SNR, 3.1 reports
         # MER directly, frequencies are band midpoints in MHz.
-        _ds31_channel(193, 229.975, "17.1", 43.0, 130),
-        _ds31_channel(194, 805.975, "14.2", 39.0, 178),
+        _ds31_channel(
+            193,
+            229.975,
+            "17.1",
+            43.0,
+            130,
+            extra={"plc": "264", "fft": "4K", "frequency": "134.975 - 324.975"},
+        ),
+        _ds31_channel(
+            194,
+            805.975,
+            "14.2",
+            39.0,
+            178,
+            extra={"plc": "822", "fft": "4K", "frequency": "750.975 - 860.975"},
+        ),
     ),
     upstream=(
-        _us_channel(1, 30.8, "28.8"),
-        _us_channel(4, 51.0, "29.5"),
-        _us_channel(3, 44.6, "29.0"),
-        _us_channel(2, 37.2, "29.0"),
-        _us_channel(41, 47.275, "24.0", "128QAM", "3.1"),
+        _us_channel(1, 30.8, "28.8", extra={"multiplex": "ATDMA"}),
+        _us_channel(4, 51.0, "29.5", extra={"multiplex": "ATDMA"}),
+        _us_channel(3, 44.6, "29.0", extra={"multiplex": "ATDMA"}),
+        _us_channel(2, 37.2, "29.0", extra={"multiplex": "ATDMA"}),
+        _us_channel(
+            41,
+            47.275,
+            "24.0",
+            "128QAM",
+            "3.1",
+            extra={
+                "activesub": "640",
+                "fft": "2K",
+                "frequency": "29.775 - 64.775",
+            },
+        ),
     ),
 )
 
@@ -508,6 +538,7 @@ async def test_future_docsis_version_is_included(
             "mer": "44",
             "channelID": 300,
             "frequency": "900.000 - 1000.000",
+            "somefuturefield": "abc",
         }
     ]
 
@@ -515,7 +546,17 @@ async def test_future_docsis_version_is_included(
 
     status = await _client(hass).get_status()
 
-    expected = _ds31_channel(300, 950.0, "12.0", 44.0, 5)
+    expected = _ds31_channel(
+        300,
+        950.0,
+        "12.0",
+        44.0,
+        5,
+        extra={
+            "somefuturefield": "abc",
+            "frequency": "900.000 - 1000.000",
+        },
+    )
     expected = replace(expected, docsis_version="4.0")
     assert status.downstream[-1] == expected
     assert len(status.downstream) == len(EXPECTED_STATUS.downstream) + 1
