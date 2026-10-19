@@ -9,6 +9,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -17,6 +18,11 @@ from custom_components.fritz_box_monitor.const import DOMAIN
 from .const import FAKE_BASE_URL, FAKE_HOST, FAKE_PASSWORD, FAKE_USERNAME
 
 FIXTURES_DIR = Path(__file__).parent / "fixtures"
+
+
+@pytest.fixture(autouse=True)
+def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
+    """Enable loading the custom integration in all tests."""
 
 
 @pytest.fixture
@@ -59,8 +65,8 @@ def mock_config_entry() -> MockConfigEntry:
         domain=DOMAIN,
         title="FRITZ!Box Monitor",
         data={
-            "host": FAKE_HOST,
-            "username": FAKE_USERNAME,
-            "password": FAKE_PASSWORD,
+            CONF_HOST: FAKE_HOST,
+            CONF_USERNAME: FAKE_USERNAME,
+            CONF_PASSWORD: FAKE_PASSWORD,
         },
     )

@@ -4,7 +4,12 @@ Monitors the connection of an AVM FRITZ!Box cable modem and exposes its
 cable (DOCSIS) line statistics as sensors.
 """
 
-from homeassistant.const import CONF_HOST, Platform
+from homeassistant.const import (
+    CONF_HOST,
+    CONF_PASSWORD,
+    CONF_USERNAME,
+    Platform,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -21,7 +26,10 @@ async def async_setup_entry(
     # TODO: replace the stub client with the real implementation; see
     # client.py for the open decisions.
     client = FritzBoxMonitorClient(
-        entry.data[CONF_HOST], session=async_get_clientsession(hass)
+        entry.data[CONF_HOST],
+        session=async_get_clientsession(hass),
+        username=entry.data[CONF_USERNAME],
+        password=entry.data[CONF_PASSWORD],
     )
 
     coordinator = FritzBoxMonitorCoordinator(hass, entry, client)

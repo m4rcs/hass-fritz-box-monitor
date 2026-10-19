@@ -3,10 +3,14 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host"
+          "host": "Host",
+          "password": "Kennwort",
+          "username": "Benutzername"
         },
         "data_description": {
-          "host": "Der Hostname oder die IP-Adresse deines FRITZ!Box-Kabelmodems."
+          "host": "Der Hostname oder die IP-Adresse deines FRITZ!Box-Kabelmodems.",
+          "password": "Das Kennwort des FRITZ!Box-Benutzerkontos.",
+          "username": "Der Benutzer f\u00fcr die Anmeldung. Leer lassen bei Boxen, die nur mit Kennwort angemeldet werden."
         }
       }
     },

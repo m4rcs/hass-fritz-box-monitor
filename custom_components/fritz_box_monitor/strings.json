@@ -3,10 +3,14 @@
     "step": {
       "user": {
         "data": {
-          "host": "Host"
+          "host": "Host",
+          "password": "Password",
+          "username": "Username"
         },
         "data_description": {
-          "host": "The hostname or IP address of your FRITZ!Box cable modem."
+          "host": "The hostname or IP address of your FRITZ!Box cable modem.",
+          "password": "The password of the FRITZ!Box user account.",
+          "username": "The user to log in as. Leave empty for boxes configured for password-only login."
         }
       }
     },
