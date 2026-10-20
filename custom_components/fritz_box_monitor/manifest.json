@@ -1,11 +1,16 @@
 {
   "domain": "fritz_box_monitor",
   "name": "FRITZ!Box Monitor",
+  "categories": [
+    "computers_network.routers_network",
+    "computers_network.monitoring"
+  ],
   "codeowners": ["@m4rcs"],
   "config_flow": true,
   "documentation": "https://github.com/m4rcs/hass-fritz-box-monitor",
   "integration_type": "device",
   "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/m4rcs/hass-fritz-box-monitor/issues",
   "requirements": [],
   "version": "0.1.0"
 }
