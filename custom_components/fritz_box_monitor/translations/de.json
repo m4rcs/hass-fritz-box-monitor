@@ -109,6 +109,15 @@
       "ds_channel": {
         "name": "Downstream-Kanal {channel}"
       },
+      "ds_channel_snr": {
+        "name": "Downstream-Kanal {channel} SNR"
+      },
+      "ds_channel_correctable": {
+        "name": "Downstream-Kanal {channel} korrigierbare Fehler"
+      },
+      "ds_channel_uncorrectable": {
+        "name": "Downstream-Kanal {channel} nicht korrigierbare Fehler"
+      },
       "us_channel": {
         "name": "Upstream-Kanal {channel}"
       }

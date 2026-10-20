@@ -10,7 +10,6 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.const import STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.entity_registry import EntityCategory
@@ -177,6 +176,23 @@ SENSORS: tuple[FritzBoxMonitorSensorEntityDescription, ...] = (
 )
 
 
+def _channel_metrics(channel: DocsisChannel, downstream: bool) -> list[str]:
+    """Return the metrics reported for one channel.
+
+    Upstream channels report power only; downstream adds SNR and the
+    error counters where the box exposes them (DOCSIS 3.1 blocks have
+    no correctable counter).
+    """
+    metrics = ["power"]
+    if downstream:
+        metrics.append("snr")
+        if channel.correctable_errors is not None:
+            metrics.append("correctable")
+        if channel.uncorrectable_errors is not None:
+            metrics.append("uncorrectable")
+    return metrics
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: FritzBoxMonitorConfigEntry,
@@ -190,15 +206,19 @@ async def async_setup_entry(
         FritzBoxMonitorSensor(coordinator, description)
         for description in SENSORS
     )
-    # One diagnostic sensor per DOCSIS channel. Channels added later
-    # (operator plan changes) only appear after a reload.
+    # One diagnostic sensor per channel and reported metric. Channels
+    # and metrics added later (operator plan changes, firmware updates)
+    # only appear after a reload.
     async_add_entities(
-        FritzBoxMonitorChannelSensor(coordinator, channel, downstream=True)
-        for channel in status.downstream
-    )
-    async_add_entities(
-        FritzBoxMonitorChannelSensor(coordinator, channel, downstream=False)
-        for channel in status.upstream
+        FritzBoxMonitorChannelSensor(
+            coordinator, channel, downstream, metric
+        )
+        for downstream, channels in (
+            (True, status.downstream),
+            (False, status.upstream),
+        )
+        for channel in channels
+        for metric in _channel_metrics(channel, downstream)
     )
 
 
@@ -225,11 +245,10 @@ class FritzBoxMonitorSensor(FritzBoxMonitorEntity, SensorEntity):
 
 
 class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
-    """A single DOCSIS channel of the cable modem.
+    """A single metric of a single DOCSIS channel.
 
-    State is the channel power; the remaining channel data is exposed
-    as attributes. The channel is resolved from the current coordinator
-    data by id on every read.
+    The channel is resolved from the current coordinator data by id on
+    every read, so entities never serve stale values.
     """
 
     def __init__(
@@ -237,23 +256,36 @@ class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
         coordinator: FritzBoxMonitorCoordinator,
         channel: DocsisChannel,
         downstream: bool,
+        metric: str,
     ) -> None:
         """Initialize the channel sensor."""
         super().__init__(coordinator)
         self._downstream = downstream
         self._channel_id = channel.channel_id
+        self._metric = metric
         self._attr_entity_category = EntityCategory.DIAGNOSTIC
-        self._attr_native_unit_of_measurement = "dBuV"
-        self._attr_state_class = SensorStateClass.MEASUREMENT
 
         direction = "ds" if downstream else "us"
+        suffix = "" if metric == "power" else f"_{metric}"
         self._attr_unique_id = (
-            f"{coordinator.data.mac}_{direction}_channel_{channel.channel_id}"
+            f"{coordinator.data.mac}_{direction}_channel_"
+            f"{channel.channel_id}{suffix}"
         )
-        self._attr_translation_key = f"{direction}_channel"
+        self._attr_translation_key = f"{direction}_channel{suffix}"
         self._attr_translation_placeholders = {
             "channel": str(channel.channel_id)
         }
+
+        if metric == "power":
+            self._attr_native_unit_of_measurement = "dBuV"
+            self._attr_state_class = SensorStateClass.MEASUREMENT
+        elif metric == "snr":
+            self._attr_native_unit_of_measurement = "dB"
+            self._attr_state_class = SensorStateClass.MEASUREMENT
+            self._attr_icon = "mdi:signal"
+        else:  # correctable / uncorrectable error counters
+            self._attr_state_class = SensorStateClass.TOTAL
+            self._attr_icon = "mdi:counter"
 
     def _current_channel(self) -> DocsisChannel | None:
         """Return this channel from the latest coordinator data."""
@@ -271,17 +303,25 @@ class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
     @override
     @property
     def native_value(self) -> StateType:
-        """Return the current power of the channel."""
+        """Return the current value of the channel metric."""
         channel = self._current_channel()
-        return channel.power if channel is not None else STATE_UNKNOWN
+        if channel is None:
+            return None
+        if self._metric == "power":
+            return channel.power
+        if self._metric == "snr":
+            return channel.snr
+        if self._metric == "correctable":
+            return channel.correctable_errors
+        return channel.uncorrectable_errors
 
     @property
     def extra_state_attributes(self) -> dict[str, StateType]:
-        """Expose the remaining channel data as attributes.
+        """Expose channel data as attributes.
 
-        Besides the mapped fields, every extra field the firmware
-        reports (latency, plc, fft, multiplex, activesub, ...) and the
-        raw frequency string are included verbatim.
+        The power sensor carries the full field set the firmware
+        reports (latency, plc, fft, multiplex, activesub, ... and the
+        raw frequency); the metric sensors identify the channel only.
         """
         channel = self._current_channel()
         if channel is None:
@@ -291,12 +331,15 @@ class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
             "docsis_version": channel.docsis_version,
             "frequency_mhz": channel.frequency,
             "modulation": channel.modulation,
-            **channel.extra,
         }
-        if channel.snr is not None:
-            attributes["snr_db"] = channel.snr
-        if channel.correctable_errors is not None:
-            attributes["correctable_errors"] = channel.correctable_errors
-        if channel.uncorrectable_errors is not None:
-            attributes["uncorrectable_errors"] = channel.uncorrectable_errors
+        if self._metric == "power":
+            attributes.update(channel.extra)
+            if channel.snr is not None:
+                attributes["snr_db"] = channel.snr
+            if channel.correctable_errors is not None:
+                attributes["correctable_errors"] = channel.correctable_errors
+            if channel.uncorrectable_errors is not None:
+                attributes["uncorrectable_errors"] = (
+                    channel.uncorrectable_errors
+                )
         return attributes

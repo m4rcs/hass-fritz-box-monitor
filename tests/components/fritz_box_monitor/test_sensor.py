@@ -1,5 +1,7 @@
 """Tests for the FRITZ!Box Monitor sensor platform."""
 
+from typing import Any
+
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.helpers.device_registry import DeviceEntry
@@ -30,56 +32,95 @@ async def loaded_entry(
 async def test_sensors_created(
     hass: HomeAssistant, loaded_entry: MockConfigEntry
 ) -> None:
-    """The platform creates aggregates plus one entity per channel."""
+    """The platform creates aggregates plus one sensor per channel metric."""
     coordinator = loaded_entry.runtime_data
     registry = er.async_get(hass)
     entries = er.async_entries_for_config_entry(
         registry, loaded_entry.entry_id
     )
 
-    expected_count = (
-        len(SENSORS) + len(coordinator.data.downstream) + len(coordinator.data.upstream)
-    )
-    assert len(entries) == expected_count
-
     expected_unique_ids = {
         f"{FAKE_MAC}_{description.key}" for description in SENSORS
-    } | {
-        f"{FAKE_MAC}_{direction}_channel_{channel.channel_id}"
-        for direction, channels in (
-            ("ds", coordinator.data.downstream),
-            ("us", coordinator.data.upstream),
-        )
-        for channel in channels
     }
+    for direction, channels in (
+        ("ds", coordinator.data.downstream),
+        ("us", coordinator.data.upstream),
+    ):
+        for channel in channels:
+            base = f"{FAKE_MAC}_{direction}_channel_{channel.channel_id}"
+            expected_unique_ids.add(base)
+            if direction == "ds":
+                expected_unique_ids.add(f"{base}_snr")
+                if channel.correctable_errors is not None:
+                    expected_unique_ids.add(f"{base}_correctable")
+                if channel.uncorrectable_errors is not None:
+                    expected_unique_ids.add(f"{base}_uncorrectable")
+
+    assert len(entries) == len(expected_unique_ids)
     assert {entry.unique_id for entry in entries} == expected_unique_ids
 
 
 async def test_channel_sensors_are_diagnostic(
     hass: HomeAssistant, loaded_entry: MockConfigEntry
 ) -> None:
-    """Channel entities carry the diagnostic category."""
+    """All channel metric sensors carry the diagnostic category."""
     registry = er.async_get(hass)
     entries = er.async_entries_for_config_entry(
         registry, loaded_entry.entry_id
     )
 
-    coordinator = loaded_entry.runtime_data
-    channel_unique_ids = {
-        f"{FAKE_MAC}_ds_channel_{channel.channel_id}"
-        for channel in coordinator.data.downstream
-    } | {
-        f"{FAKE_MAC}_us_channel_{channel.channel_id}"
-        for channel in coordinator.data.upstream
-    }
     channel_entries = [
-        entry for entry in entries if entry.unique_id in channel_unique_ids
+        entry
+        for entry in entries
+        if "_channel_" in entry.unique_id
+        and not entry.unique_id.endswith("_channel_count")
     ]
-    assert len(channel_entries) == len(channel_unique_ids)
+    assert len(channel_entries) == len(entries) - len(SENSORS)
     assert all(
         entry.entity_category == EntityCategory.DIAGNOSTIC
         for entry in channel_entries
     )
+
+
+async def test_channel_metric_sensors(
+    hass: HomeAssistant, loaded_entry: MockConfigEntry
+) -> None:
+    """SNR and error counters are exposed per channel where reported."""
+    registry = er.async_get(hass)
+    entries = er.async_entries_for_config_entry(
+        registry, loaded_entry.entry_id
+    )
+
+    def _state(unique_id: str) -> Any:
+        entry = next(
+            (entry for entry in entries if entry.unique_id == unique_id),
+            None,
+        )
+        if entry is None:
+            return None
+        return hass.states.get(entry.entity_id)
+
+    snr8 = _state(f"{FAKE_MAC}_ds_channel_8_snr")
+    assert snr8 is not None
+    assert snr8.state == "39.0"
+    assert snr8.attributes["unit_of_measurement"] == "dB"
+
+    correctable8 = _state(f"{FAKE_MAC}_ds_channel_8_correctable")
+    assert correctable8 is not None
+    assert correctable8.state == "986"
+
+    uncorrectable21 = _state(f"{FAKE_MAC}_ds_channel_21_uncorrectable")
+    assert uncorrectable21 is not None
+    assert uncorrectable21.state == "1120"
+
+    snr193 = _state(f"{FAKE_MAC}_ds_channel_193_snr")
+    assert snr193 is not None
+    assert snr193.state == "43.0"
+
+    # DOCSIS 3.1 blocks report no correctable counter: no entity exists.
+    assert _state(f"{FAKE_MAC}_ds_channel_193_correctable") is None
+    # Upstream reports power only.
+    assert _state(f"{FAKE_MAC}_us_channel_1_snr") is None
 
 
 async def test_channel_sensor_carries_attributes(
