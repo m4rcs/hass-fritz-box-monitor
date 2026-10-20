@@ -1,7 +1,7 @@
 {
   "domain": "fritz_box_monitor",
   "name": "FRITZ!Box Monitor",
-  "categories": ["computers_network.monitoring"]
+  "categories": ["computers_network.monitoring"],
   "codeowners": ["@m4rcs"],
   "config_flow": true,
   "documentation": "https://github.com/m4rcs/hass-fritz-box-monitor",
