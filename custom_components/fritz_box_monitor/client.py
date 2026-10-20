@@ -41,7 +41,8 @@ _NUMBER_PATTERN = re.compile(r"\d+(?:[.,]\d+)*")
 _MAC_PATTERN = re.compile(r"^([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$")
 
 # Channel keys mapped onto dedicated DocsisChannel fields; everything
-# else a firmware reports ends up verbatim in DocsisChannel.extra.
+# else a firmware reports ends up verbatim in DocsisChannel.extra
+# (including the raw mse/mer values next to the normalized SNR).
 _MAPPED_CHANNEL_KEYS = frozenset(
     {
         "channelID",
@@ -49,8 +50,6 @@ _MAPPED_CHANNEL_KEYS = frozenset(
         "modulation",
         "corrErrors",
         "nonCorrErrors",
-        "mse",
-        "mer",
         "frequency",
     }
 )
@@ -72,7 +71,7 @@ class DocsisChannel:
     channel_id: int
     docsis_version: str
     frequency: float  # MHz; midpoint of the band for 3.1 blocks
-    power: float  # dBuV
+    power: float  # dBmV
     modulation: str
     snr: float | None = None  # dB
     correctable_errors: int | None = None

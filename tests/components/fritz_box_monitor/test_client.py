@@ -62,7 +62,11 @@ def _ds_channel(
         snr=snr,
         correctable_errors=correctable,
         uncorrectable_errors=uncorrectable,
-        extra={"latency": 0.32, "frequency": f"{frequency:.3f}"},
+        extra={
+            "latency": 0.32,
+            "frequency": f"{frequency:.3f}",
+            "mse": str(-snr),
+        },
     )
 
 
@@ -148,7 +152,12 @@ EXPECTED_STATUS = CableModemStatus(
             "17.1",
             43.0,
             130,
-            extra={"plc": "264", "fft": "4K", "frequency": "134.975 - 324.975"},
+            extra={
+                "plc": "264",
+                "fft": "4K",
+                "mer": "43",
+                "frequency": "134.975 - 324.975",
+            },
         ),
         _ds31_channel(
             194,
@@ -156,7 +165,12 @@ EXPECTED_STATUS = CableModemStatus(
             "14.2",
             39.0,
             178,
-            extra={"plc": "822", "fft": "4K", "frequency": "750.975 - 860.975"},
+            extra={
+                "plc": "822",
+                "fft": "4K",
+                "mer": "39",
+                "frequency": "750.975 - 860.975",
+            },
         ),
     ),
     upstream=(
@@ -554,6 +568,7 @@ async def test_future_docsis_version_is_included(
         5,
         extra={
             "somefuturefield": "abc",
+            "mer": "44",
             "frequency": "900.000 - 1000.000",
         },
     )

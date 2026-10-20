@@ -91,7 +91,7 @@ SENSORS: tuple[FritzBoxMonitorSensorEntityDescription, ...] = (
         key="ds_power_min",
         translation_key="ds_power_min",
         icon="mdi:arrow-down-bold",
-        native_unit_of_measurement="dBuV",
+        native_unit_of_measurement="dBmV",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda status: _downstream_power(status, highest=False),
     ),
@@ -99,7 +99,7 @@ SENSORS: tuple[FritzBoxMonitorSensorEntityDescription, ...] = (
         key="ds_power_max",
         translation_key="ds_power_max",
         icon="mdi:arrow-down-bold",
-        native_unit_of_measurement="dBuV",
+        native_unit_of_measurement="dBmV",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda status: _downstream_power(status, highest=True),
     ),
@@ -107,7 +107,7 @@ SENSORS: tuple[FritzBoxMonitorSensorEntityDescription, ...] = (
         key="us_power_min",
         translation_key="us_power_min",
         icon="mdi:arrow-up-bold",
-        native_unit_of_measurement="dBuV",
+        native_unit_of_measurement="dBmV",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda status: _upstream_power(status, highest=False),
     ),
@@ -115,7 +115,7 @@ SENSORS: tuple[FritzBoxMonitorSensorEntityDescription, ...] = (
         key="us_power_max",
         translation_key="us_power_max",
         icon="mdi:arrow-up-bold",
-        native_unit_of_measurement="dBuV",
+        native_unit_of_measurement="dBmV",
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda status: _upstream_power(status, highest=True),
     ),
@@ -277,7 +277,7 @@ class FritzBoxMonitorChannelSensor(FritzBoxMonitorEntity, SensorEntity):
         }
 
         if metric == "power":
-            self._attr_native_unit_of_measurement = "dBuV"
+            self._attr_native_unit_of_measurement = "dBmV"
             self._attr_state_class = SensorStateClass.MEASUREMENT
         elif metric == "snr":
             self._attr_native_unit_of_measurement = "dB"

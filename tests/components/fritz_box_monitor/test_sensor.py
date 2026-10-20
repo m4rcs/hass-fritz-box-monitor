@@ -123,6 +123,41 @@ async def test_channel_metric_sensors(
     assert _state(f"{FAKE_MAC}_us_channel_1_snr") is None
 
 
+async def test_upstream_channel_sensors_carry_attributes(
+    hass: HomeAssistant, loaded_entry: MockConfigEntry
+) -> None:
+    """Upstream channels expose the AVM column set per DOCSIS version."""
+    registry = er.async_get(hass)
+    entries = er.async_entries_for_config_entry(
+        registry, loaded_entry.entry_id
+    )
+
+    def _attrs(unique_id: str) -> dict[str, Any]:
+        entry = next(
+            entry for entry in entries if entry.unique_id == unique_id
+        )
+        state = hass.states.get(entry.entity_id)
+        assert state is not None
+        return state.attributes
+
+    # DOCSIS 3.1: modulation, frequency, power, active subcarriers, FFT.
+    us31 = _attrs(f"{FAKE_MAC}_us_channel_41")
+    assert us31["unit_of_measurement"] == "dBmV"
+    assert us31["modulation"] == "128QAM"
+    assert us31["frequency_mhz"] == 47.275
+    assert us31["frequency"] == "29.775 - 64.775"
+    assert us31["activesub"] == "640"
+    assert us31["fft"] == "2K"
+
+    # DOCSIS 3.0: modulation, frequency, power, multiplexing method.
+    us30 = _attrs(f"{FAKE_MAC}_us_channel_1")
+    assert us30["unit_of_measurement"] == "dBmV"
+    assert us30["modulation"] == "64QAM"
+    assert us30["frequency_mhz"] == 30.8
+    assert us30["frequency"] == "30.800"
+    assert us30["multiplex"] == "ATDMA"
+
+
 async def test_channel_sensor_carries_attributes(
     hass: HomeAssistant, loaded_entry: MockConfigEntry
 ) -> None:
@@ -140,12 +175,14 @@ async def test_channel_sensor_carries_attributes(
     state = hass.states.get(channel_entry.entity_id)
     assert state is not None
     assert state.state == "16.0"
+    assert state.attributes["unit_of_measurement"] == "dBmV"
     assert state.attributes["channel_id"] == 8
     assert state.attributes["docsis_version"] == "3.0"
     assert state.attributes["frequency_mhz"] == 618.0
     assert state.attributes["frequency"] == "618.000"
     assert state.attributes["modulation"] == "256QAM"
     assert state.attributes["snr_db"] == 39.0
+    assert state.attributes["mse"] == "-39.0"
     assert state.attributes["correctable_errors"] == 986
     assert state.attributes["uncorrectable_errors"] == 0
     assert state.attributes["latency"] == 0.32
@@ -171,6 +208,7 @@ async def test_docsis31_channel_sensor_carries_extra_fields(
     assert state.attributes["frequency_mhz"] == 229.975
     assert state.attributes["frequency"] == "134.975 - 324.975"
     assert state.attributes["snr_db"] == 43.0
+    assert state.attributes["mer"] == "43"
     assert state.attributes["plc"] == "264"
     assert state.attributes["fft"] == "4K"
     assert "correctable_errors" not in state.attributes
